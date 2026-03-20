@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vinted Photo Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f0e11; font-family: 'DM Sans', sans-serif; color: #f0eee8; }
+    .app {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; padding: 24px 14px 80px;
+    }
+    .card {
+      width: 100%; max-width: 540px;
+      background: #18161c; border: 1px solid #2e2a38;
+      border-radius: 20px; padding: 26px 20px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .badge {
+      display: inline-block; background: #2a1e3f; color: #b085f5;
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px;
+      margin-bottom: 12px; border: 1px solid #4a2d7a;
+    }
+    h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #f0eee8; margin-bottom: 8px; }
+    .subtitle { font-size: 13px; color: #7a7490; margin-bottom: 16px; line-height: 1.6; }
+    .methods {
+      background: #141218; border-radius: 10px;
+      padding: 11px 14px; margin-bottom: 16px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px;
+    }
+    .method { font-size: 12px; color: #9d97b0; display: flex; align-items: center; gap: 5px; }
+    .dropzone {
+      border: 2px dashed #3a3348; border-radius: 14px;
+      padding: 28px 16px; text-align: center; cursor: pointer;
+      margin-bottom: 14px; background: #141218;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .dropzone:hover { border-color: #8b5cf6; background: #1c1628; }
+    .drop-icon { font-size: 28px; margin-bottom: 7px; }
+    .drop-text { font-size: 14px; color: #9d97b0; }
+    .drop-text strong { color: #b085f5; }
+    .file-count {
+      display: flex; align-items: center; gap: 9px;
+      background: #1e1b25; border: 1px solid #2e2a38;
+      border-radius: 10px; padding: 10px 14px;
+      margin-bottom: 12px; font-size: 14px; color: #c4bfd6;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #8b5cf6; flex-shrink: 0; }
+    .btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #7c3aed, #9b4dff);
+      color: #fff; font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700; border: none;
+      border-radius: 12px; cursor: pointer;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-green {
+      width: 100%; padding: 13px; margin-top: 12px;
+      background: linear-gradient(135deg, #1a6e3a, #22a05a);
+      color: #fff; font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700; border: none;
+      border-radius: 12px; cursor: pointer;
+    }
+    .btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
+    .progress-wrap { margin: 12px 0; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #7a7490; margin-bottom: 6px; }
+    .progress-bar { height: 6px; background: #2a2535; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #7c3aed, #c084fc); border-radius: 99px; transition: width 0.1s; }
+    .err { margin-top: 12px; padding: 11px 14px; background: #1e0f0f; border: 1px solid #5a2020; border-radius: 10px; color: #f87171; font-size: 13px; }
+    .results-top { margin-top: 20px; }
+    .results-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: #f0eee8; margin-bottom: 10px; }
+    .ios-hint {
+      background: #0d1f14; border: 1.5px solid #1e5c30;
+      border-radius: 12px; padding: 13px 15px; margin-bottom: 14px;
+      font-size: 12.5px; color: #a8d5b5; line-height: 1.7;
+    }
+    .ios-hint b { color: #6fcf97; }
+    .all-done-banner {
+      background: #0d1f14; border: 1.5px solid #2d6b42;
+      border-radius: 12px; padding: 14px;
+      text-align: center; font-size: 14px; color: #6fcf97;
+      font-weight: 600; margin-bottom: 14px;
+    }
+    .progress-saved { text-align: center; font-size: 13px; color: #6fcf97; margin-bottom: 12px; }
+    .photo-list { display: flex; flex-direction: column; gap: 12px; }
+    .photo-card {
+      border-radius: 14px; overflow: hidden;
+      border: 2px solid #2e2a38; background: #141218; position: relative;
+    }
+    .photo-card.is-saved { border-color: #2d6b42; }
+    .photo-card img { width: 100%; display: block; user-select: none; -webkit-user-select: none; }
+    .photo-footer {
+      padding: 10px 12px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .photo-num { font-size: 13px; color: #7a7490; }
+    .mark-btn {
+      font-size: 12px; font-weight: 600; font-family: 'Syne', sans-serif;
+      padding: 6px 14px; border-radius: 99px; border: none; cursor: pointer;
+      background: #3d2d70; color: #c9a6ff;
+    }
+    .mark-btn.done { background: #1a3d26; color: #6fcf97; }
+    .saved-overlay {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10,25,16,0.55);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .saved-check {
+      background: rgba(10,25,16,0.9); color: #6fcf97;
+      font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 99px;
+    }
+    input[type=file] { display: none; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="card">
+    <div class="badge">Vinted Tool</div>
+    <h1>Обновление хешей фото</h1>
+    <p class="subtitle">5 изменений одновременно — Vinted не распознает фото как дубликат.</p>
+
+    <div class="methods">
+      <div class="method">✂️ Обрезка краёв</div>
+      <div class="method">🔄 Поворот ±0.9°</div>
+      <div class="method">🎨 Цветовой сдвиг RGB</div>
+      <div class="method">☀️ Сдвиг яркости</div>
+      <div class="method">🔴 5 шумовых пикселей</div>
+      <div class="method">💾 Пересжатие JPEG 93%</div>
+    </div>
+
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+      <div class="drop-icon">📷</div>
+      <div class="drop-text">Нажми чтобы <strong>выбрать фото</strong></div>
+      <div class="drop-text" style="margin-top:4px;font-size:11px;color:#5a5470">JPG, PNG — любое количество</div>
+    </div>
+    <input type="file" id="fileInput" multiple accept="image/*" />
+
+    <div class="file-count" id="fileCount" style="display:none">
+      <div class="dot"></div>
+      <span>Выбрано: <strong id="fileCountNum">0</strong> фото</span>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap" style="display:none">
+      <div class="progress-label">
+        <span>Обработка...</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <button class="btn" id="processBtn" disabled onclick="runProcess()">🔄 Обработать фото</button>
+
+    <div class="err" id="errBox" style="display:none"></div>
+
+    <div class="results-top" id="resultsSection" style="display:none">
+      <div class="results-title" id="resultsTitle"></div>
+
+      <div class="ios-hint" id="saveHint"></div>
+
+      <button class="btn-green" id="saveAllBtn" onclick="saveAll()">📥 Сохранить все фото</button>
+
+      <div id="allDoneBanner" style="display:none" class="all-done-banner"></div>
+      <div id="progressSaved" style="display:none" class="progress-saved"></div>
+
+      <div class="photo-list" id="photoList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let files = [];
+  let results = [];
+  let saved = {};
+
+  const fileInput = document.getElementById('fileInput');
+  const processBtn = document.getElementById('processBtn');
+  const fileCount = document.getElementById('fileCount');
+  const fileCountNum = document.getElementById('fileCountNum');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const errBox = document.getElementById('errBox');
+  const resultsSection = document.getElementById('resultsSection');
+  const resultsTitle = document.getElementById('resultsTitle');
+  const photoList = document.getElementById('photoList');
+  const saveHint = document.getElementById('saveHint');
+  const saveAllBtn = document.getElementById('saveAllBtn');
+  const allDoneBanner = document.getElementById('allDoneBanner');
+  const progressSaved = document.getElementById('progressSaved');
+  const dropzone = document.getElementById('dropzone');
+
+  // Drag and drop
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = '#8b5cf6'; });
+  dropzone.addEventListener('dragleave', () => { dropzone.style.borderColor = '#3a3348'; });
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault(); dropzone.style.borderColor = '#3a3348';
+    handleFiles(e.dataTransfer.files);
+  });
+
+  fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+  function handleFiles(incoming) {
+    files = Array.from(incoming).filter(f => f.type.startsWith('image/'));
+    results = []; saved = {};
+    resultsSection.style.display = 'none';
+    errBox.style.display = 'none';
+    if (files.length) {
+      fileCount.style.display = 'flex';
+      fileCountNum.textContent = files.length;
+      processBtn.disabled = false;
+      processBtn.textContent = `🔄 Обработать ${files.length} фото`;
+    }
+  }
+
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = () => reject(new Error('Не удалось прочитать: ' + file.name));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) u8arr[n] = bstr.charCodeAt(n);
+    return new Blob([u8arr], { type: mime });
+  }
+
+  function seededRand(seed) {
+    let s = seed;
+    return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+  }
+
+  async function transformImage(file, index) {
+    const srcDataURL = await readFileAsDataURL(file);
+    const img = await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('Не открылся файл: ' + file.name));
+      image.src = srcDataURL;
+    });
+
+    const rand = seededRand(index * 7919 + 31337);
+    const W = img.naturalWidth, H = img.naturalHeight;
+
+    const cropT = Math.floor(rand() * 6) + 3;
+    const cropB = Math.floor(rand() * 6) + 3;
+    const cropL = Math.floor(rand() * 6) + 3;
+    const cropR = Math.floor(rand() * 6) + 3;
+    const outW = W - cropL - cropR;
+    const outH = H - cropT - cropB;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = outW; canvas.height = outH;
+    const ctx = canvas.getContext('2d');
+
+    const rotateDeg = (rand() - 0.5) * 1.8;
+    ctx.save();
+    ctx.translate(outW / 2, outH / 2);
+    ctx.rotate(rotateDeg * Math.PI / 180);
+    ctx.drawImage(img, -W / 2 + cropL, -H / 2 + cropT, W, H);
+    ctx.restore();
+
+    const imageData = ctx.getImageData(0, 0, outW, outH);
+    const d = imageData.data;
+    const rShift = Math.floor(rand() * 6) + 2;
+    const gShift = Math.floor(rand() * 4) - 1;
+    const bShift = -(Math.floor(rand() * 4) + 1);
+    for (let i = 0; i < d.length; i += 4) {
+      d[i]     = Math.min(255, Math.max(0, d[i]     + rShift));
+      d[i + 1] = Math.min(255, Math.max(0, d[i + 1] + gShift));
+      d[i + 2] = Math.min(255, Math.max(0, d[i + 2] + bShift));
+    }
+    ctx.putImageData(imageData, 0, 0);
+
+    const bright = Math.floor(rand() * 8) + 3;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgba(255,255,255,${bright / 255})`;
+    ctx.fillRect(0, 0, outW, outH);
+
+    for (let j = 0; j < 5; j++) {
+      const px = Math.floor(rand() * (outW - 20)) + 10;
+      const py = Math.floor(rand() * (outH - 20)) + 10;
+      ctx.fillStyle = `rgb(${Math.floor(rand()*60)+175},${Math.floor(rand()*60)+175},${Math.floor(rand()*60)+175})`;
+      ctx.fillRect(px, py, 1, 1);
+    }
+
+    const outDataURL = canvas.toDataURL('image/jpeg', 0.93);
+    return { dataURL: outDataURL, blob: dataURLtoBlob(outDataURL), name: file.name };
+  }
+
+  async function runProcess() {
+    if (!files.length) return;
+    processBtn.disabled = true;
+    progressWrap.style.display = 'block';
+    resultsSection.style.display = 'none';
+    errBox.style.display = 'none';
+    results = []; saved = {};
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const result = await transformImage(files[i], i);
+        results.push(result);
+        const pct = Math.round(((i + 1) / files.length) * 100);
+        progressFill.style.width = pct + '%';
+        progressText.textContent = `${i + 1} / ${files.length}`;
+      }
+      renderResults();
+    } catch (e) {
+      errBox.textContent = 'Ошибка: ' + e.message;
+      errBox.style.display = 'block';
+    } finally {
+      processBtn.disabled = false;
+      processBtn.textContent = `🔄 Обработать снова`;
+      progressWrap.style.display = 'none';
+    }
+  }
+
+  function renderResults() {
+    resultsTitle.textContent = `✅ ${results.length} фото готово`;
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const hasShare = navigator.share && navigator.canShare;
+
+    if (isIOS) {
+      saveHint.innerHTML = `<b>📱 iPhone:</b> Нажми <b>«Сохранить все фото»</b> — выбери «Сохранить изображения».<br>Или зажми каждое фото → <b>«Сохранить в медиатеку»</b>.`;
+    } else {
+      saveHint.innerHTML = `<b>💻 На компьютере:</b> Нажми <b>«Сохранить все фото»</b> — файлы скачаются по одному автоматически.`;
+    }
+
+    photoList.innerHTML = '';
+    results.forEach((r, i) => {
+      const card = document.createElement('div');
+      card.className = 'photo-card';
+      card.id = `card-${i}`;
+      card.innerHTML = `
+        <img src="${r.dataURL}" alt="фото ${i+1}" draggable="false" />
+        <div class="photo-footer">
+          <span class="photo-num">Фото ${i + 1} из ${results.length}</span>
+          <button class="mark-btn" id="mark-${i}" onclick="markSaved(${i})">Отметить как сохранённое</button>
+        </div>`;
+      photoList.appendChild(card);
+    });
+
+    resultsSection.style.display = 'block';
+    updateSavedUI();
+  }
+
+  function markSaved(i) {
+    saved[i] = true;
+    const btn = document.getElementById(`mark-${i}`);
+    if (btn) { btn.textContent = '✓ сохранено'; btn.className = 'mark-btn done'; }
+    const card = document.getElementById(`card-${i}`);
+    if (card) {
+      card.classList.add('is-saved');
+      if (!card.querySelector('.saved-overlay')) {
+        const ov = document.createElement('div');
+        ov.className = 'saved-overlay';
+        ov.innerHTML = '<div class="saved-check">✓ сохранено</div>';
+        card.insertBefore(ov, card.querySelector('.photo-footer'));
+      }
+    }
+    updateSavedUI();
+  }
+
+  function updateSavedUI() {
+    const count = Object.keys(saved).length;
+    if (count === results.length && results.length > 0) {
+      allDoneBanner.textContent = `🎉 Все ${results.length} фото сохранены! Можно загружать на Vinted.`;
+      allDoneBanner.style.display = 'block';
+      progressSaved.style.display = 'none';
+      saveAllBtn.disabled = true;
+      saveAllBtn.textContent = '✅ Все сохранены';
+    } else if (count > 0) {
+      progressSaved.textContent = `Сохранено: ${count} из ${results.length}`;
+      progressSaved.style.display = 'block';
+    }
+  }
+
+  async function saveAll() {
+    if (!results.length) return;
+    saveAllBtn.disabled = true;
+    saveAllBtn.textContent = 'Сохраняю...';
+
+    const shareFiles = results.map((r, i) => {
+      const base = r.name.replace(/\.[^.]+$/, '');
+      return new File([r.blob], `${base}_v${i + 1}.jpg`, { type: 'image/jpeg' });
+    });
+
+    // Попробуем Web Share API (работает на iOS Safari и Android Chrome)
+    if (navigator.canShare && navigator.canShare({ files: shareFiles })) {
+      try {
+        await navigator.share({ files: shareFiles, title: 'Vinted фото' });
+        results.forEach((_, i) => markSaved(i));
+        return;
+      } catch (e) {
+        if (e.name === 'AbortError') {
+          saveAllBtn.disabled = false;
+          saveAllBtn.textContent = `📥 Сохранить все фото`;
+          return;
+        }
+      }
+    }
+
+    // Fallback: скачать каждый файл через <a download>
+    for (let i = 0; i < results.length; i++) {
+      const a = document.createElement('a');
+      const base = results[i].name.replace(/\.[^.]+$/, '');
+      a.href = results[i].dataURL;
+      a.download = `${base}_v${i + 1}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      await new Promise(r => setTimeout(r, 400));
+    }
+    results.forEach((_, i) => markSaved(i));
+    saveAllBtn.textContent = `📥 Сохранить все фото`;
+    saveAllBtn.disabled = false;
+  }
+</script>
+</body>
+</html>
