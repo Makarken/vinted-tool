@@ -83,7 +83,10 @@
 <body>
 <div class="app">
 <div class="card">
-  <div class="badge">📷 Vinted Tool</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div class="badge" style="margin-bottom:0">📷 Vinted Tool</div>
+    <button onclick="document.getElementById('instrModal').classList.add('open')" style="background:#1e1b25;border:1.5px solid #2e2a38;color:#b085f5;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;padding:5px 14px;border-radius:99px;cursor:pointer;-webkit-tap-highlight-color:transparent">📖 Инструкция</button>
+  </div>
   <h1>Обновление хешей фото</h1>
   <p class="sub">8 изменений + профессиональные улучшения как в Lightroom — Vinted не распознает дубликат, а фото выглядит лучше.</p>
 
@@ -580,5 +583,77 @@ window.addEventListener('mouseup',()=>dragging=false);
 window.addEventListener('touchend',()=>dragging=false);
 window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 </script>
+
+<!-- Instruction modal -->
+<div class="modal" id="instrModal" style="overflow-y:auto;align-items:flex-start;padding:0">
+  <div style="width:100%;max-width:560px;background:#18161c;border-radius:0;min-height:100vh;padding:24px 20px 60px;position:relative">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#f0eee8">📖 Инструкция</div>
+      <button onclick="document.getElementById('instrModal').classList.remove('open')" style="background:rgba(255,255,255,.1);border:none;color:#fff;font-size:18px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:13px;line-height:1.7;color:#c4bfd6">
+
+      <div style="background:#141218;border-radius:12px;padding:16px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#b085f5;margin-bottom:8px">🎯 Для чего этот инструмент?</div>
+        <div>Когда ты перевыставляешь товар на Vinted с теми же фото — платформа автоматически определяет дубликат и удаляет объявление или блокирует аккаунт. Vinted сравнивает не файлы напрямую, а <b style="color:#f0eee8">perceptual hash (pHash)</b> — цифровой «отпечаток» визуального содержимого фото. Этот инструмент незаметно изменяет каждое фото так, чтобы pHash стал другим, но визуально фото выглядело так же.</div>
+      </div>
+
+      <div style="background:#141218;border-radius:12px;padding:16px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#b085f5;margin-bottom:10px">⚙️ 8 изменений на каждом фото</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div><span style="color:#f0eee8;font-weight:600">✂️ Обрезка краёв (3–8px)</span><br>С каждой стороны срезается уникальное количество пикселей. Меняет размер и состав изображения — один из самых надёжных способов изменить pHash, подтверждённый пользователями Vinted на форумах.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🔄 Поворот ±0.9°</span><br>Микро-поворот на случайный угол от −0.9° до +0.9°. Незаметен глазу, но полностью меняет все пиксели изображения и соответственно хеш.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🎨 Цветовой сдвиг RGB</span><br>Каждый канал (красный, зелёный, синий) сдвигается на уникальное значение. Изменение незаметно визуально, но пиксели становятся другими на уровне данных.</div>
+          <div><span style="color:#f0eee8;font-weight:600">☀️ Яркость + контраст</span><br>Лёгкий подъём яркости и контраст ×1.10. Попутно улучшает внешний вид фото — делает его более профессиональным.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🌈 Насыщенность +15%</span><br>Усиливает цвета товара — они выглядят точнее и привлекательнее для покупателя. Также меняет данные всех цветных пикселей.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🔴 5 шумовых пикселей</span><br>В случайных уникальных координатах добавляются 5 пикселей с уникальным цветом. Невидимы, но создают уникальный «отпечаток» файла.</div>
+          <div><span style="color:#f0eee8;font-weight:600">📄 Рандомное имя файла</span><br>Каждое фото получает полностью случайное имя вида <span style="color:#a78bfa">k7x2m9ab_f3d1.jpg</span>. Vinted не может связать новый файл со старым по имени.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🧹 Очистка EXIF метаданных</span><br>Оригинальное фото содержит скрытые данные: модель телефона, GPS координаты, дата съёмки, серийный номер камеры. При обработке через canvas все эти данные автоматически удаляются — файл создаётся с нуля.</div>
+        </div>
+      </div>
+
+      <div style="background:#141218;border-radius:12px;padding:16px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#b085f5;margin-bottom:10px">🎛️ Дополнительные опции</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div><span style="color:#f0eee8;font-weight:600">📐 Формат 4:5</span><br>Обрезает фото до соотношения сторон 4:5 (портретный формат). Vinted показывает такие фото крупнее в ленте поиска — больше кликов и просмотров.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🎨 Авто-улучшение</span><br>Включает яркость, контраст, насыщенность и коррекцию белого баланса. Специально настроено под фото из бокса (lightbox) — убирает жёлтый оттенок от LED ламп, делает белый фон чище.</div>
+          <div><span style="color:#f0eee8;font-weight:600">⚡ Быстрый режим</span><br>Обрабатывает 2 фото одновременно вместо одного. Реальное ускорение ~1.7× при большом количестве фото.</div>
+          <div><span style="color:#f0eee8;font-weight:600">👁️ До/После</span><br>Кнопка «Сравнить» под каждым фото — открывает слайдер для сравнения оригинала и обработанного.</div>
+          <div><span style="color:#f0eee8;font-weight:600">🖼️ Белая рамка</span><br>Добавляет белую рамку вокруг фото — меняет размер и соотношение сторон, дополнительно изменяя хеш. Тонкая рамка (~5px) практически незаметна.</div>
+        </div>
+      </div>
+
+      <div style="background:#141218;border-radius:12px;padding:16px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#b085f5;margin-bottom:8px">🔄 Рандомность при каждом запуске</div>
+        <div>При каждом нажатии «Обработать» генерируется новый случайный seed — уникальное число которое управляет всеми 8 изменениями. Это значит что одни и те же оригинальные фото каждый раз дают <b style="color:#f0eee8">уникальный набор результатов</b>. Для каждого нового аккаунта достаточно загрузить оригиналы и нажать обработать снова.</div>
+      </div>
+
+      <div style="background:#141218;border-radius:12px;padding:16px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#b085f5;margin-bottom:8px">📱 Как сохранить на iPhone</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div>1. После обработки зажми фото пальцем (~1 сек)</div>
+          <div>2. В меню выбери <b style="color:#f0eee8">«Сохранить в Фото»</b></div>
+          <div>3. Нажми «Отметить ✓» чтобы следить какие уже сохранены</div>
+          <div style="margin-top:4px;color:#7a7490">Или нажми «Сохранить все фото» → «Сохранить изображения» — сохранит всё сразу.</div>
+          <div style="color:#f87171;margin-top:4px">⚠️ Не зажимай фото в окне сравнения — там сохранится обрезанная версия без рамки. Закрой сравнение и зажимай в основном списке.</div>
+        </div>
+      </div>
+
+      <div style="background:#141218;border-radius:12px;padding:16px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#b085f5;margin-bottom:8px">💡 Советы</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div>• Храни <b style="color:#f0eee8">оригинальные фото</b> отдельно — они нужны для каждого нового запуска</div>
+          <div>• Не обрабатывай уже обработанные фото повторно — качество падает</div>
+          <div>• Не загружай все 200 позиций в один день — растяни на несколько дней</div>
+          <div>• Vinted также отслеживает IP и устройство — для нового аккаунта лучше использовать другой браузер</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
