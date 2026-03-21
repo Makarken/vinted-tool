@@ -239,13 +239,9 @@ function regionToDataURL(img, sx, sy, sw, sh, outW, outH, quality=0.92){
 }
 
 // ─── Photo enhancement pipeline ───────────────────────────────────────────────
-// Optimised for LIGHTBOX product photos (bags, watches, accessories).
-// Lightbox already gives even, bright, shadow-free light.
-// Heavy corrections make it worse. Subtle professional touch only:
-// 1. White balance — fix warm/yellow LED cast (most common lightbox problem)
-// 2. Contrast +6% — very gentle
-// 3. Brightness — only if genuinely underexposed
-// 4. Saturation +10% — accurate vivid colours, not overdone
+// Best-of-both enhancement:
+// White balance fix (removes yellow LED cast) from lightbox version
+// + visible brightness/contrast/saturation from original good version
 function applyEnhance(d, len){
   // ── Analyse ───────────────────────────────────────────────────────────────────
   let sumL=0, sumR=0, sumG=0, sumB=0;
@@ -259,19 +255,19 @@ function applyEnhance(d, len){
   const avgG=sumG/count;
   const avgB=sumB/count;
 
-  // White balance: measure yellow/warm cast
-  // Lightbox LEDs are often warm (3000-4000K), adding yellow tint
-  const yellowCast=avgR-avgB; // positive = too warm/yellow
-  const rCorr = yellowCast>12 ? -Math.round(yellowCast*0.18) : 0; // cool down reds
-  const bCorr = yellowCast>12 ?  Math.round(yellowCast*0.22) : 0; // add blue
+  // 1. White balance — fix yellow/warm LED cast
+  const yellowCast=avgR-avgB;
+  const rCorr = yellowCast>10 ? -Math.round(yellowCast*0.18) : 0;
+  const bCorr = yellowCast>10 ?  Math.round(yellowCast*0.22) : 0;
   const greenCast=avgG-((avgR+avgB)/2);
-  const gCorr = greenCast>10 ? -Math.round(greenCast*0.08) : 0;
+  const gCorr = greenCast>8 ? -Math.round(greenCast*0.08) : 0;
 
-  // Brightness: only boost if photo is darker than expected from lightbox
-  const bBoost = avgL<130 ? Math.round((130-avgL)*0.20) : 0; // max ~8px
+  // 2. Brightness: target avgL ~155 (noticeable lift, like first version)
+  // Clamped so bright photos don't blow out
+  const bBoost = Math.max(-10, Math.min(25, 155-avgL));
 
-  // Contrast: very gentle
-  const cf=1.06;
+  // 3. Contrast: +10% — visible but not harsh (between cf=1.06 and cf=1.15)
+  const cf=1.10;
 
   // ── Apply per-pixel ────────────────────────────────────────────────────────────
   for(let i=0;i<len;i+=4){
@@ -279,14 +275,14 @@ function applyEnhance(d, len){
     let g=d[i+1]+gCorr;
     let b=d[i+2]+bCorr;
 
-    // Gentle contrast
+    // Contrast + brightness
     r=(r-128)*cf+128+bBoost;
     g=(g-128)*cf+128+bBoost;
     b=(b-128)*cf+128+bBoost;
 
-    // Saturation +10%
+    // 4. Saturation +15% — vivid colours, looks good on products
     const mean=(r+g+b)/3;
-    const satF=1.10;
+    const satF=1.15;
     r=mean+(r-mean)*satF;
     g=mean+(g-mean)*satF;
     b=mean+(b-mean)*satF;
