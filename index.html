@@ -348,11 +348,16 @@ async function transform(file, idx, framePct_){
 
   // Draw image into inner area (rotated, clipped so rotation never bleeds into frame)
   const rot=(rnd()-0.5)*1.8;
+  // Scale up slightly to fill corners after rotation — prevents white triangles
+  // Formula: need scale so rotated image fully covers sw×sh rect
+  const rotRad=Math.abs(rot)*Math.PI/180;
+  const coverScale=Math.cos(rotRad)+Math.abs(Math.sin(rotRad))*(Math.max(sw,sh)/Math.min(sw,sh));
+  const drawW=sw*coverScale, drawH=sh*coverScale;
   ctx.save();
   ctx.beginPath(); ctx.rect(frame,frame,sw,sh); ctx.clip();
   ctx.translate(frame+sw/2, frame+sh/2);
   ctx.rotate(rot*Math.PI/180);
-  ctx.drawImage(img, sx, sy, sw, sh, -(sw/2), -(sh/2), sw, sh);
+  ctx.drawImage(img, sx, sy, sw, sh, -(drawW/2), -(drawH/2), drawW, drawH);
   ctx.restore();
 
   // ── 5. Apply enhancements to inner pixels only ────────────────────────────────
