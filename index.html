@@ -239,59 +239,57 @@ function regionToDataURL(img, sx, sy, sw, sh, outW, outH, quality=0.92){
 }
 
 // ─── Photo enhancement pipeline ───────────────────────────────────────────────
-// Based on Lightroom/Shopify product photo best practices:
-// 1. Analyse brightness & white balance
-// 2. Lift shadows (reveal dark detail)
-// 3. Recover highlights (pull back blown whites)
-// 4. Contrast +15–20
-// 5. Brightness +10–15
-// 6. Saturation/Vibrance +20% (boosts dull colors)
+// Optimised for LIGHTBOX product photos (bags, watches, accessories).
+// Lightbox already gives even, bright, shadow-free light.
+// Heavy corrections make it worse. Subtle professional touch only:
+// 1. White balance — fix warm/yellow LED cast (most common lightbox problem)
+// 2. Contrast +6% — very gentle
+// 3. Brightness — only if genuinely underexposed
+// 4. Saturation +10% — accurate vivid colours, not overdone
 function applyEnhance(d, len){
-  // ── Analyse ──────────────────────────────────────────────────────────────────
-  let sumL=0, sumR=0, sumB=0, count=len/4;
+  // ── Analyse ───────────────────────────────────────────────────────────────────
+  let sumL=0, sumR=0, sumG=0, sumB=0;
+  const count=len/4;
   for(let i=0;i<len;i+=4){
-    const l=(d[i]+d[i+1]+d[i+2])/3;
-    sumL+=l; sumR+=d[i]; sumB+=d[i+2];
+    sumL+=(d[i]+d[i+1]+d[i+2])/3;
+    sumR+=d[i]; sumG+=d[i+1]; sumB+=d[i+2];
   }
   const avgL=sumL/count;
   const avgR=sumR/count;
+  const avgG=sumG/count;
   const avgB=sumB/count;
 
-  // Brightness target: aim for avgL ≈ 155 (bright, clean product look)
-  const targetL=155;
-  const bBoost=Math.max(-20, Math.min(40, targetL-avgL)); // clamp so we don't blow out bright photos
-  const cf=1.15; // contrast factor — research says +15 is good for products
+  // White balance: measure yellow/warm cast
+  // Lightbox LEDs are often warm (3000-4000K), adding yellow tint
+  const yellowCast=avgR-avgB; // positive = too warm/yellow
+  const rCorr = yellowCast>12 ? -Math.round(yellowCast*0.18) : 0; // cool down reds
+  const bCorr = yellowCast>12 ?  Math.round(yellowCast*0.22) : 0; // add blue
+  const greenCast=avgG-((avgR+avgB)/2);
+  const gCorr = greenCast>10 ? -Math.round(greenCast*0.08) : 0;
 
-  // White balance correction: if image is yellow (R>>B), add slight blue
-  const wbShift = (avgR-avgB>18) ? Math.floor((avgR-avgB)*0.12) : 0; // cool down yellow cast
+  // Brightness: only boost if photo is darker than expected from lightbox
+  const bBoost = avgL<130 ? Math.round((130-avgL)*0.20) : 0; // max ~8px
 
-  // ── Apply per-pixel ───────────────────────────────────────────────────────────
+  // Contrast: very gentle
+  const cf=1.06;
+
+  // ── Apply per-pixel ────────────────────────────────────────────────────────────
   for(let i=0;i<len;i+=4){
-    let r=d[i], g=d[i+1], b=d[i+2];
-    const lum=(r+g+b)/3;
+    let r=d[i]+rCorr;
+    let g=d[i+1]+gCorr;
+    let b=d[i+2]+bCorr;
 
-    // 1. Shadow lift: dark pixels get extra boost (reveal product detail in shadows)
-    const shadowBoost = lum<80 ? Math.floor((80-lum)*0.25) : 0;
+    // Gentle contrast
+    r=(r-128)*cf+128+bBoost;
+    g=(g-128)*cf+128+bBoost;
+    b=(b-128)*cf+128+bBoost;
 
-    // 2. Highlight recovery: very bright pixels pulled back (prevent blown whites)
-    const hlRecovery = lum>235 ? -Math.floor((lum-235)*0.4) : 0;
-
-    // 3. Contrast around 128 midpoint
-    r=(r-128)*cf+128; g=(g-128)*cf+128; b=(b-128)*cf+128;
-
-    // 4. Brightness boost (targeted at darkness level)
-    const totalBoost=bBoost+shadowBoost+hlRecovery;
-    r+=totalBoost; g+=totalBoost; b+=totalBoost;
-
-    // 5. White balance correction (reduce yellow cast)
-    b+=wbShift;
-
-    // 6. Saturation boost: increase distance from luminance mean
-    const mean2=(r+g+b)/3;
-    const satF=1.20; // +20% saturation — research says this makes colors pop
-    r=mean2+(r-mean2)*satF;
-    g=mean2+(g-mean2)*satF;
-    b=mean2+(b-mean2)*satF;
+    // Saturation +10%
+    const mean=(r+g+b)/3;
+    const satF=1.10;
+    r=mean+(r-mean)*satF;
+    g=mean+(g-mean)*satF;
+    b=mean+(b-mean)*satF;
 
     d[i]=Math.min(255,Math.max(0,r|0));
     d[i+1]=Math.min(255,Math.max(0,g|0));
