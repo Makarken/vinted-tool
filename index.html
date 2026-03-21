@@ -12,7 +12,7 @@
     .card{width:100%;max-width:540px;background:#18161c;border:1px solid #2e2a38;border-radius:20px;padding:26px 20px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
     .badge{display:inline-block;background:#2a1e3f;color:#b085f5;font-size:11px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:12px;border:1px solid #4a2d7a}
     h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#f0eee8;margin-bottom:8px}
-    .subtitle{font-size:13px;color:#7a7490;margin-bottom:16px;line-height:1.6}
+    .sub{font-size:13px;color:#7a7490;margin-bottom:16px;line-height:1.6}
     .methods{background:#141218;border-radius:10px;padding:11px 14px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr;gap:5px 10px}
     .method{font-size:12px;color:#9d97b0;display:flex;align-items:center;gap:5px}
     .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
@@ -22,54 +22,63 @@
     .opt-title{font-size:12px;font-weight:600;color:#c4bfd6;font-family:'Syne',sans-serif;margin-bottom:2px}
     .opt.on .opt-title{color:#c9a6ff}
     .opt-desc{font-size:11px;color:#5a5470;line-height:1.4}
-    .frame-box{background:#1a1530;border:1.5px solid #3d2d70;border-radius:12px;padding:12px 14px;margin-bottom:14px}
-    .frame-box strong{display:block;font-size:13px;color:#c9a6ff;margin-bottom:2px}
-    .frame-box span{font-size:12px;color:#7a7490}
+    .fbox{background:#1a1530;border:1.5px solid #3d2d70;border-radius:12px;padding:12px 14px;margin-bottom:14px}
+    .fbox strong{display:block;font-size:13px;color:#c9a6ff;margin-bottom:2px}
+    .fbox span{font-size:12px;color:#7a7490}
     .fsizes{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
     .fsbtn{padding:5px 11px;border-radius:99px;border:1.5px solid #3d2d70;background:transparent;color:#9d97b0;font-size:12px;font-weight:600;font-family:'Syne',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
     .fsbtn.on{background:#3d2d70;color:#c9a6ff;border-color:#8b5cf6}
     .drop{border:2px dashed #3a3348;border-radius:14px;padding:26px 16px;text-align:center;cursor:pointer;margin-bottom:14px;background:#141218;transition:border-color .2s,background .2s}
-    .drop:hover,.drop.over{border-color:#8b5cf6;background:#1c1628}
+    .drop.over,.drop:hover{border-color:#8b5cf6;background:#1c1628}
     .drop-icon{font-size:28px;margin-bottom:7px}
     .drop-text{font-size:14px;color:#9d97b0}
     .drop-text strong{color:#b085f5}
-    .fcount{display:flex;align-items:center;gap:9px;background:#1e1b25;border:1px solid #2e2a38;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px;color:#c4bfd6}
+    .fcnt{display:flex;align-items:center;gap:9px;background:#1e1b25;border:1px solid #2e2a38;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px;color:#c4bfd6}
     .dot{width:7px;height:7px;border-radius:50%;background:#8b5cf6;flex-shrink:0}
     .btn{width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#9b4dff);color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
     .btn:disabled{opacity:.4;cursor:not-allowed}
     .btn-g{width:100%;padding:13px;margin-top:12px;background:linear-gradient(135deg,#1a6e3a,#22a05a);color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
     .btn-g:disabled{opacity:.4;cursor:not-allowed}
-    .prog{margin:12px 0}
-    .prog-lbl{display:flex;justify-content:space-between;font-size:12px;color:#7a7490;margin-bottom:6px}
-    .prog-bar{height:6px;background:#2a2535;border-radius:99px;overflow:hidden}
-    .prog-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:99px;transition:width .1s}
+    .prg{margin:12px 0}
+    .prg-lbl{display:flex;justify-content:space-between;font-size:12px;color:#7a7490;margin-bottom:6px}
+    .prg-bar{height:6px;background:#2a2535;border-radius:99px;overflow:hidden}
+    .prg-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:99px;transition:width .1s}
     .err{margin-top:12px;padding:11px 14px;background:#1e0f0f;border:1px solid #5a2020;border-radius:10px;color:#f87171;font-size:13px}
     .res-top{margin-top:20px}
     .res-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#f0eee8;margin-bottom:10px}
     .hint{background:#0d1f14;border:1.5px solid #1e5c30;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#a8d5b5;line-height:1.7}
     .hint b{color:#6fcf97}
-    .done-banner{background:#0d1f14;border:1.5px solid #2d6b42;border-radius:12px;padding:14px;text-align:center;font-size:14px;color:#6fcf97;font-weight:600;margin-bottom:14px}
-    .prog-saved{text-align:center;font-size:13px;color:#6fcf97;margin-bottom:12px}
+    .done-b{background:#0d1f14;border:1.5px solid #2d6b42;border-radius:12px;padding:14px;text-align:center;font-size:14px;color:#6fcf97;font-weight:600;margin-bottom:14px}
+    .prg-sv{text-align:center;font-size:13px;color:#6fcf97;margin-bottom:12px}
     .plist{display:flex;flex-direction:column;gap:14px}
+    /* Photo card — processed image is ALWAYS the top-level img so iOS saves correctly */
     .pcard{border-radius:14px;overflow:hidden;border:2px solid #2e2a38;background:#141218;position:relative}
     .pcard.saved{border-color:#2d6b42}
-    .pcard>img{width:100%;display:block;-webkit-user-select:none;user-select:none}
+    .pcard-img{width:100%;display:block;-webkit-user-select:none;user-select:none}
     .pfoot{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
     .pnum{font-size:13px;color:#7a7490;flex-shrink:0}
-    .mbtn{font-size:11px;font-weight:600;font-family:'Syne',sans-serif;padding:5px 12px;border-radius:99px;border:none;cursor:pointer;background:#3d2d70;color:#c9a6ff;-webkit-tap-highlight-color:transparent}
+    .pbtns{display:flex;gap:6px;align-items:center}
+    .cmp-btn{font-size:11px;font-weight:600;font-family:'Syne',sans-serif;padding:5px 10px;border-radius:99px;border:1.5px solid #3a3348;background:transparent;color:#7a7490;cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+    .mbtn{font-size:11px;font-weight:600;font-family:'Syne',sans-serif;padding:5px 12px;border-radius:99px;border:none;cursor:pointer;background:#3d2d70;color:#c9a6ff;-webkit-tap-highlight-color:transparent;white-space:nowrap}
     .mbtn.done{background:#1a3d26;color:#6fcf97}
     .sov{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(10,25,16,.55);display:flex;align-items:center;justify-content:center;pointer-events:none}
     .scheck{background:rgba(10,25,16,.9);color:#6fcf97;font-size:13px;font-weight:700;padding:6px 16px;border-radius:99px}
-    /* Before/After — correct implementation */
-    .ba{position:relative;overflow:hidden;cursor:col-resize;touch-action:pan-y}
-    .ba-before{display:block;width:100%}
+
+    /* Compare modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+    .modal.open{display:flex}
+    .modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center}
+    .modal-title{font-family:'Syne',sans-serif;font-size:14px;color:#c9a6ff;margin-bottom:12px;font-weight:700}
+    /* Slider inside modal */
+    .ba{position:relative;overflow:hidden;cursor:col-resize;touch-action:pan-y;border-radius:12px;max-width:100%;max-height:70vh}
+    .ba-before{display:block;width:100%;max-height:70vh;object-fit:contain}
     .ba-after{position:absolute;top:0;left:0;height:100%;overflow:hidden;width:50%}
-    .ba-after-img{position:absolute;top:0;left:0;height:100%;/* width set by JS */display:block}
+    .ba-after-img{position:absolute;top:0;left:0;height:100%;display:block}
     .ba-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.9);left:50%;transform:translateX(-50%);pointer-events:none}
-    .ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 10px rgba(0,0,0,.5);pointer-events:none}
+    .ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 12px rgba(0,0,0,.5);pointer-events:none}
     .ba-tag{position:absolute;top:8px;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;padding:2px 7px;border-radius:99px;pointer-events:none}
-    .ba-tag.b{left:8px;background:rgba(0,0,0,.6);color:#fff}
-    .ba-tag.a{right:8px;background:rgba(139,92,246,.85);color:#fff}
+    .ba-tag.b{left:8px;background:rgba(0,0,0,.65);color:#fff}
+    .ba-tag.a{right:8px;background:rgba(139,92,246,.9);color:#fff}
     input[type=file]{display:none}
   </style>
 </head>
@@ -78,13 +87,13 @@
 <div class="card">
   <div class="badge">📷 Vinted Tool</div>
   <h1>Обновление хешей фото</h1>
-  <p class="subtitle">8 изменений одновременно — Vinted не распознает фото как дубликат.</p>
+  <p class="sub">8 изменений одновременно — Vinted не распознает фото как дубликат.</p>
 
   <div class="methods">
     <div class="method">✂️ Обрезка краёв</div>
     <div class="method">🔄 Поворот ±0.9°</div>
     <div class="method">🎨 Цветовой сдвиг RGB</div>
-    <div class="method">☀️ Сдвиг яркости</div>
+    <div class="method">☀️ Авто-яркость</div>
     <div class="method">🔴 5 шумовых пикселей</div>
     <div class="method">🖼️ Белая рамка</div>
     <div class="method">📄 Рандомное имя</div>
@@ -110,11 +119,11 @@
     <div class="opt on" id="o-cmp" onclick="tog('cmp',this)">
       <div class="opt-icon">👁️</div>
       <div class="opt-title">До/После</div>
-      <div class="opt-desc">Слайдер (до 25 фото)</div>
+      <div class="opt-desc">Кнопка сравнения</div>
     </div>
   </div>
 
-  <div class="frame-box">
+  <div class="fbox">
     <strong>🖼️ Белая рамка</strong>
     <span>Меняет размер и соотношение сторон</span>
     <div class="fsizes">
@@ -125,50 +134,66 @@
     </div>
   </div>
 
-  <div class="drop" id="drop" onclick="document.getElementById('fi').click()">
+  <div class="drop" id="dropEl" onclick="document.getElementById('fi').click()">
     <div class="drop-icon">📷</div>
     <div class="drop-text">Нажми чтобы <strong>выбрать фото</strong></div>
     <div class="drop-text" style="margin-top:4px;font-size:11px;color:#5a5470">JPG, PNG — любое количество</div>
   </div>
   <input type="file" id="fi" multiple accept="image/*"/>
 
-  <div class="fcount" id="fcnt" style="display:none">
+  <div class="fcnt" id="fcntEl" style="display:none">
     <div class="dot"></div>
-    <span>Выбрано: <strong id="fnum">0</strong> фото</span>
+    <span>Выбрано: <strong id="fnumEl">0</strong> фото</span>
   </div>
-  <div class="prog" id="prg" style="display:none">
-    <div class="prog-lbl"><span id="prg-s">Обработка...</span><span id="prg-t">0/0</span></div>
-    <div class="prog-bar"><div class="prog-fill" id="prg-f" style="width:0%"></div></div>
+  <div class="prg" id="prgEl" style="display:none">
+    <div class="prg-lbl"><span id="prgS">Обработка...</span><span id="prgT">0/0</span></div>
+    <div class="prg-bar"><div class="prg-fill" id="prgF" style="width:0%"></div></div>
   </div>
 
   <button class="btn" id="goBtn" disabled onclick="run()">🔄 Обработать фото</button>
-  <div class="err" id="errBox" style="display:none"></div>
+  <div class="err" id="errEl" style="display:none"></div>
 
-  <div class="res-top" id="resArea" style="display:none">
-    <div class="res-title" id="resTitle"></div>
-    <div class="hint" id="hintBox"></div>
+  <div class="res-top" id="resEl" style="display:none">
+    <div class="res-title" id="resTitleEl"></div>
+    <div class="hint" id="hintEl"></div>
     <button class="btn-g" id="saveBtn" onclick="saveAll()">📥 Сохранить все фото</button>
-    <div class="done-banner" id="doneBanner" style="display:none"></div>
-    <div class="prog-saved" id="savedCnt" style="display:none"></div>
-    <div class="plist" id="plist"></div>
+    <div class="done-b" id="doneEl" style="display:none"></div>
+    <div class="prg-sv" id="svCntEl" style="display:none"></div>
+    <div class="plist" id="plistEl"></div>
   </div>
 </div>
+</div>
+
+<!-- Compare modal — shown when tapping "Сравнить" -->
+<div class="modal" id="modalEl" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-title">Тяни влево-вправо для сравнения</div>
+  <div class="ba" id="baEl">
+    <img class="ba-before" id="baBeforeImg" draggable="false"/>
+    <div class="ba-after" id="baAfterEl">
+      <img class="ba-after-img" id="baAfterImg" draggable="false"/>
+    </div>
+    <div class="ba-line" id="baLineEl"></div>
+    <div class="ba-knob" id="baKnobEl">⇔</div>
+    <div class="ba-tag b">ДО</div>
+    <div class="ba-tag a">ПОСЛЕ</div>
+  </div>
 </div>
 
 <script>
 'use strict';
 
-// ─── State ───────────────────────────────────────────────────────────────────
-let files=[], results=[], savedMap={}, framePx=20, seed=rndSeed();
-const O={ratio:true,enhance:true,fast:true,cmp:true};
+// ─── State ────────────────────────────────────────────────────────────────────
+let files=[], results=[], savedMap={}, framePx=20;
+let seed=rndSeed();
+const O={ratio:true, enhance:true, fast:true, cmp:true};
 
 function rndSeed(){return Math.floor(Math.random()*999983)+1;}
-
 function tog(k,el){O[k]=!O[k];el.classList.toggle('on',O[k]);}
 function setF(px,btn){framePx=px;document.querySelectorAll('.fsbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
 
-// ─── Drag & drop ─────────────────────────────────────────────────────────────
-const dropEl=document.getElementById('drop');
+// ─── File input ───────────────────────────────────────────────────────────────
+const dropEl=document.getElementById('dropEl');
 dropEl.addEventListener('dragover',e=>{e.preventDefault();dropEl.classList.add('over');});
 dropEl.addEventListener('dragleave',()=>dropEl.classList.remove('over'));
 dropEl.addEventListener('drop',e=>{e.preventDefault();dropEl.classList.remove('over');loadFiles(e.dataTransfer.files);});
@@ -177,359 +202,299 @@ document.getElementById('fi').addEventListener('change',e=>loadFiles(e.target.fi
 function loadFiles(raw){
   files=Array.from(raw).filter(f=>f.type.startsWith('image/'));
   results=[];savedMap={};
-  document.getElementById('resArea').style.display='none';
-  document.getElementById('errBox').style.display='none';
-  document.getElementById('fcnt').style.display='none';
+  document.getElementById('resEl').style.display='none';
+  document.getElementById('errEl').style.display='none';
+  document.getElementById('fcntEl').style.display='none';
   if(!files.length)return;
-  document.getElementById('fcnt').style.display='flex';
-  document.getElementById('fnum').textContent=files.length;
+  document.getElementById('fcntEl').style.display='flex';
+  document.getElementById('fnumEl').textContent=files.length;
   document.getElementById('goBtn').disabled=false;
   document.getElementById('goBtn').textContent=`🔄 Обработать ${files.length} фото`;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-function readURL(f){return new Promise((ok,fail)=>{const r=new FileReader();r.onload=e=>ok(e.target.result);r.onerror=()=>fail(new Error('Ошибка чтения: '+f.name));r.readAsDataURL(f);});}
-
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function readURL(f){
+  return new Promise((ok,fail)=>{
+    const r=new FileReader();
+    r.onload=e=>ok(e.target.result);
+    r.onerror=()=>fail(new Error('Ошибка чтения: '+f.name));
+    r.readAsDataURL(f);
+  });
+}
 function toBlob(dataURL){
   const[h,d]=dataURL.split(',');
   const mime=h.match(/:(.*?);/)[1];
-  const raw=atob(d);const u=new Uint8Array(raw.length);
+  const raw=atob(d);
+  const u=new Uint8Array(raw.length);
   for(let i=0;i<raw.length;i++)u[i]=raw.charCodeAt(i);
   return new Blob([u],{type:mime});
 }
-
 function mkRand(s){let v=s;return()=>{v=(v*1664525+1013904223)&0xffffffff;return(v>>>0)/0xffffffff;};}
 
-// ─── Core transform ──────────────────────────────────────────────────────────
-async function transform(file, idx, frame) {
-  const origURL = await readURL(file);
+// ─── Core transform ───────────────────────────────────────────────────────────
+// Order: 1) load → 2) auto-enhance → 3) crop/ratio → 4) frame → 5) rotate → 6) noise
+async function transform(file, idx, frame){
+  const origURL=await readURL(file);
 
-  const img = await new Promise((ok,fail)=>{
+  const img=await new Promise((ok,fail)=>{
     const i=new Image();
     i.onload=()=>ok(i);
     i.onerror=()=>fail(new Error('Не открылся: '+file.name));
     i.src=origURL;
   });
 
-  const rnd = mkRand(idx*7919 + seed);
+  const rnd=mkRand(idx*7919+seed);
   const W=img.naturalWidth, H=img.naturalHeight;
+  if(W<40||H<40) throw new Error('Слишком маленькое фото: '+file.name);
 
-  // Guard: images must be at least 60px each side
-  if(W<60||H<60) throw new Error(`Слишком маленькое фото: ${file.name}`);
+  // ── STEP 1: Read pixels from original for enhance analysis ──────────────────
+  // Use a temp canvas to read original pixels
+  const tmpCv=document.createElement('canvas');
+  tmpCv.width=Math.min(W,400); tmpCv.height=Math.min(H,400); // downsample for speed
+  const tmpCtx=tmpCv.getContext('2d');
+  tmpCtx.drawImage(img,0,0,tmpCv.width,tmpCv.height);
+  const tmpD=tmpCtx.getImageData(0,0,tmpCv.width,tmpCv.height).data;
+  let totalBr=0;
+  for(let i=0;i<tmpD.length;i+=4) totalBr+=(tmpD[i]+tmpD[i+1]+tmpD[i+2])/3;
+  const avgBr=totalBr/(tmpD.length/4);
+  // Enhance params (computed from original, applied later)
+  const boost=O.enhance&&avgBr<140?Math.floor((140-avgBr)*0.15):0;
+  const cf=O.enhance?1.08:1.0;
 
-  // 1. Edge crop — each side 3–8px, ensure positive result
-  let sx = Math.floor(rnd()*6)+3;
-  let sy = Math.floor(rnd()*6)+3;
-  let sw = W - sx - (Math.floor(rnd()*6)+3);
-  let sh = H - sy - (Math.floor(rnd()*6)+3);
-  sw = Math.max(sw, 40); sh = Math.max(sh, 40); // safety
+  // ── STEP 2: Determine source crop region ────────────────────────────────────
+  let sx=Math.floor(rnd()*6)+3;
+  let sy=Math.floor(rnd()*6)+3;
+  let sw=W-sx-(Math.floor(rnd()*6)+3);
+  let sh=H-sy-(Math.floor(rnd()*6)+3);
+  sw=Math.max(sw,40); sh=Math.max(sh,40);
 
-  // 2. Crop to 4:5 portrait ratio (correct: adjust sx/sy/sw/sh)
+  // ── STEP 3: Apply 4:5 portrait ratio crop ───────────────────────────────────
   if(O.ratio){
     const tgt=4/5, cur=sw/sh;
     if(cur>tgt){
-      // Too wide → remove equal margins left and right
+      // Too wide: trim left and right equally
       const nw=Math.floor(sh*tgt);
-      const excess=sw-nw;
-      sx+=Math.floor(excess/2);
+      sx+=Math.floor((sw-nw)/2);
       sw=nw;
     } else if(cur<tgt){
-      // Too tall → trim top more than bottom (keep bottom of clothing visible)
+      // Too tall: trim mostly from top (keep bottom of item)
       const nh=Math.floor(sw/tgt);
-      const excess=sh-nh;
-      sy+=Math.floor(excess*0.3);
+      sy+=Math.floor((sh-nh)*0.3);
       sh=nh;
     }
   }
+  sw=Math.max(sw,20); sh=Math.max(sh,20);
 
-  // 3. Output size = cropped area + frame border
+  // ── STEP 4: Final canvas = cropped area + frame ──────────────────────────────
   const outW=sw+frame*2, outH=sh+frame*2;
   const cv=document.createElement('canvas');
   cv.width=outW; cv.height=outH;
   const ctx=cv.getContext('2d');
 
-  // 4. White frame fill
+  // White frame background
   ctx.fillStyle='#ffffff';
   ctx.fillRect(0,0,outW,outH);
 
-  // 5. Draw rotated image — CLIP to inner rect so rotation never bleeds into frame
-  const rot=(rnd()-0.5)*1.8; // ±0.9°
+  // ── STEP 5: Draw rotated image clipped to inner rect ─────────────────────────
+  const rot=(rnd()-0.5)*1.8;
   ctx.save();
   ctx.beginPath();
-  ctx.rect(frame, frame, sw, sh);
+  ctx.rect(frame,frame,sw,sh);
   ctx.clip();
   ctx.translate(frame+sw/2, frame+sh/2);
   ctx.rotate(rot*Math.PI/180);
-  // drawImage with source rect (sx,sy,sw,sh) → dest centered
   ctx.drawImage(img, sx, sy, sw, sh, -sw/2, -sh/2, sw, sh);
   ctx.restore();
 
-  // 6. RGB shift on inner pixels only
-  const id=ctx.getImageData(frame,frame,sw,sh), d=id.data;
+  // ── STEP 6: Apply enhancements to inner pixels ────────────────────────────────
+  const id=ctx.getImageData(frame,frame,sw,sh);
+  const d=id.data;
   const rS=Math.floor(rnd()*6)+2;
   const gS=Math.floor(rnd()*4)-1;
   const bS=-(Math.floor(rnd()*4)+1);
 
-  // 7. Auto-enhance: measure avg brightness, boost dark photos
-  let tot=0;
-  for(let i=0;i<d.length;i+=4) tot+=(d[i]+d[i+1]+d[i+2])/3;
-  const avg=tot/(d.length/4);
-  const boost=O.enhance&&avg<140?Math.floor((140-avg)*0.15):0;
-  const cf=O.enhance?1.08:1.0;
-
   for(let i=0;i<d.length;i+=4){
     let r=d[i]+rS, g=d[i+1]+gS, b=d[i+2]+bS;
-    if(O.enhance){r=(r-128)*cf+128+boost;g=(g-128)*cf+128+boost;b=(b-128)*cf+128+boost;}
+    if(O.enhance){
+      r=(r-128)*cf+128+boost;
+      g=(g-128)*cf+128+boost;
+      b=(b-128)*cf+128+boost;
+    }
     d[i]=Math.min(255,Math.max(0,r|0));
     d[i+1]=Math.min(255,Math.max(0,g|0));
     d[i+2]=Math.min(255,Math.max(0,b|0));
   }
   ctx.putImageData(id,frame,frame);
 
-  // 8. Subtle brightness overlay
+  // ── STEP 7: Brightness overlay ───────────────────────────────────────────────
   const br=Math.floor(rnd()*8)+3;
   ctx.globalCompositeOperation='source-over';
   ctx.fillStyle=`rgba(255,255,255,${br/255})`;
   ctx.fillRect(frame,frame,sw,sh);
 
-  // 9. 5 unique noise pixels
+  // ── STEP 8: 5 noise pixels ───────────────────────────────────────────────────
   for(let j=0;j<5;j++){
     const px=frame+Math.floor(rnd()*(sw-20))+10;
     const py=frame+Math.floor(rnd()*(sh-20))+10;
-    const nr=Math.floor(rnd()*60)+175;
-    const ng=Math.floor(rnd()*60)+175;
-    const nb=Math.floor(rnd()*60)+175;
-    ctx.fillStyle=`rgb(${nr},${ng},${nb})`;
+    ctx.fillStyle=`rgb(${Math.floor(rnd()*60)+175},${Math.floor(rnd()*60)+175},${Math.floor(rnd()*60)+175})`;
     ctx.fillRect(px,py,1,1);
   }
 
-  // 10. Export JPEG 93% (re-encoding changes file hash)
   const outURL=cv.toDataURL('image/jpeg',0.93);
   const name=Math.random().toString(36).slice(2,10)+'_'+Math.random().toString(36).slice(2,6)+'.jpg';
 
-  return {
+  return{
     dataURL: outURL,
     blob: toBlob(outURL),
     name,
-    // Only store origURL if compare mode ON and batch is small (memory safety)
-    origURL: (O.cmp && files.length<=25) ? origURL : null,
-    outW, outH
+    origURL: O.cmp ? origURL : null  // keep orig only if compare enabled
   };
 }
 
-// ─── Concurrency runner (limit=N tasks at a time) ─────────────────────────────
-function runPool(tasks, limit, onDone) {
-  return new Promise((resolve, reject)=>{
+// ─── Concurrency pool ─────────────────────────────────────────────────────────
+function runPool(tasks, limit, onProgress){
+  return new Promise((resolve,reject)=>{
     const out=new Array(tasks.length);
     let started=0, finished=0;
     function next(){
-      if(started>=tasks.length) return;
+      if(started>=tasks.length)return;
       const i=started++;
       tasks[i]()
-        .then(r=>{out[i]=r; finished++; onDone(finished,tasks.length); if(finished===tasks.length)resolve(out); else next();})
+        .then(r=>{
+          out[i]=r; finished++;
+          onProgress(finished,tasks.length);
+          if(finished===tasks.length) resolve(out);
+          else next();
+        })
         .catch(reject);
     }
     for(let k=0;k<Math.min(limit,tasks.length);k++) next();
   });
 }
 
-// ─── Run processing ───────────────────────────────────────────────────────────
+// ─── Main run ─────────────────────────────────────────────────────────────────
 async function run(){
-  if(!files.length) return;
-  document.getElementById('goBtn').disabled=true;
-  document.getElementById('prg').style.display='block';
-  document.getElementById('resArea').style.display='none';
-  document.getElementById('errBox').style.display='none';
-  results=[]; savedMap={};
-  seed=rndSeed(); // new unique seed every run
+  if(!files.length)return;
+  const goBtn=document.getElementById('goBtn');
+  goBtn.disabled=true;
+  document.getElementById('prgEl').style.display='block';
+  document.getElementById('resEl').style.display='none';
+  document.getElementById('errEl').style.display='none';
+  results=[];savedMap={};
+  seed=rndSeed();
 
-  const pf=document.getElementById('prg-f');
-  const pt=document.getElementById('prg-t');
-  const ps=document.getElementById('prg-s');
-  ps.textContent=O.fast?'⚡ Быстрый режим...':'Обработка...';
+  document.getElementById('prgS').textContent=O.fast?'⚡ Быстрый режим...':'Обработка...';
 
   try{
     const tasks=files.map((f,i)=>()=>transform(f,i,framePx));
-    const limit=O.fast?2:1;
-    results=await runPool(tasks, limit, (done,total)=>{
+    results=await runPool(tasks, O.fast?2:1, (done,total)=>{
       const p=Math.round(done/total*100);
-      pf.style.width=p+'%';
-      pt.textContent=`${done}/${total}`;
+      document.getElementById('prgF').style.width=p+'%';
+      document.getElementById('prgT').textContent=`${done}/${total}`;
     });
     renderResults();
-  } catch(e){
-    document.getElementById('errBox').textContent='Ошибка: '+e.message;
-    document.getElementById('errBox').style.display='block';
-  } finally{
-    document.getElementById('goBtn').disabled=false;
-    document.getElementById('goBtn').textContent='🔄 Обработать снова';
-    document.getElementById('prg').style.display='none';
+  }catch(e){
+    document.getElementById('errEl').textContent='Ошибка: '+e.message;
+    document.getElementById('errEl').style.display='block';
+  }finally{
+    goBtn.disabled=false;
+    goBtn.textContent='🔄 Обработать снова';
+    document.getElementById('prgEl').style.display='none';
   }
 }
 
 // ─── Render results ───────────────────────────────────────────────────────────
-// Global drag state for all sliders (one set of listeners on window)
-let dragSlider=null;
-
-function setupGlobalDrag(){
-  function move(clientX){
-    if(!dragSlider) return;
-    const {wrap,afterEl,lineEl,knobEl}=dragSlider;
-    const rect=wrap.getBoundingClientRect();
-    const pct=Math.min(100,Math.max(0,(clientX-rect.left)/rect.width*100));
-    afterEl.style.width=pct+'%';
-    lineEl.style.left=pct+'%';
-    knobEl.style.left=pct+'%';
-  }
-  window.addEventListener('mousemove',e=>move(e.clientX));
-  window.addEventListener('touchmove',e=>{if(dragSlider)move(e.touches[0].clientX);},{passive:true});
-  window.addEventListener('mouseup',()=>dragSlider=null);
-  window.addEventListener('touchend',()=>dragSlider=null);
-}
-setupGlobalDrag();
-
-function initSlider(wrapId, afterId, lineId, knobId, imgEl){
-  const wrap=document.getElementById(wrapId);
-  const afterEl=document.getElementById(afterId);
-  const lineEl=document.getElementById(lineId);
-  const knobEl=document.getElementById(knobId);
-
-  // Set after-image width to match wrapper (so clipping div reveals it correctly)
-  function syncImgWidth(){
-    imgEl.style.width=wrap.clientWidth+'px';
-  }
-  syncImgWidth();
-  // Re-sync on resize
-  new ResizeObserver(syncImgWidth).observe(wrap);
-
-  wrap.addEventListener('mousedown',e=>{
-    dragSlider={wrap,afterEl,lineEl,knobEl};
-    const rect=wrap.getBoundingClientRect();
-    const pct=Math.min(100,Math.max(0,(e.clientX-rect.left)/rect.width*100));
-    afterEl.style.width=pct+'%'; lineEl.style.left=pct+'%'; knobEl.style.left=pct+'%';
-    e.preventDefault();
-  });
-  wrap.addEventListener('touchstart',e=>{
-    dragSlider={wrap,afterEl,lineEl,knobEl};
-    const rect=wrap.getBoundingClientRect();
-    const pct=Math.min(100,Math.max(0,(e.touches[0].clientX-rect.left)/rect.width*100));
-    afterEl.style.width=pct+'%'; lineEl.style.left=pct+'%'; knobEl.style.left=pct+'%';
-  },{passive:true});
-}
-
 function renderResults(){
-  document.getElementById('resTitle').textContent=`✅ ${results.length} фото готово`;
+  document.getElementById('resTitleEl').textContent=`✅ ${results.length} фото готово`;
 
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-  const hint=document.getElementById('hintBox');
-  if(isIOS){
-    hint.innerHTML=`<b>📱 iPhone:</b> Зажми фото пальцем → <b>«Сохранить в медиатеку»</b>.<br>Или нажми <b>«Сохранить все»</b> и выбери «Сохранить изображения».`;
-  } else {
-    hint.innerHTML=`<b>💻 Компьютер:</b> Нажми <b>«Сохранить все»</b> — файлы скачаются автоматически.`;
-  }
+  document.getElementById('hintEl').innerHTML=isIOS
+    ?`<b>📱 iPhone:</b> Зажми фото → <b>«Сохранить в Фото»</b>.<br>Или нажми <b>«Сохранить все»</b> → «Сохранить изображения».`
+    :`<b>💻 Компьютер:</b> Нажми <b>«Сохранить все»</b> — файлы скачаются автоматически.`;
 
-  const list=document.getElementById('plist');
+  const list=document.getElementById('plistEl');
   list.innerHTML='';
 
   results.forEach((r,i)=>{
     const card=document.createElement('div');
-    card.className='pcard'; card.id=`c${i}`;
+    card.className='pcard';
+    card.id=`c${i}`;
 
-    const showCmp=O.cmp && r.origURL;
+    // IMPORTANT: processed image is always the direct child img
+    // so iOS "hold to save" always saves the processed version
+    const cmpBtn=O.cmp&&r.origURL
+      ?`<button class="cmp-btn" onclick="openModal(${i})">👁 Сравнить</button>`
+      :'';
 
-    if(showCmp){
-      // Correct Before/After: ba-after is clipping div, img inside is full-wrap-width
-      const wid=`bw${i}`, aid=`ba${i}`, lid=`bl${i}`, kid=`bk${i}`, iid=`bi${i}`;
-      card.innerHTML=`
-        <div class="ba" id="${wid}">
-          <img class="ba-before" src="${r.origURL}" draggable="false"/>
-          <div class="ba-after" id="${aid}">
-            <img id="${iid}" class="ba-after-img" src="${r.dataURL}" draggable="false"/>
-          </div>
-          <div class="ba-line" id="${lid}" style="left:50%"></div>
-          <div class="ba-knob" id="${kid}" style="left:50%">⇔</div>
-          <div class="ba-tag b">ДО</div>
-          <div class="ba-tag a">ПОСЛЕ</div>
+    card.innerHTML=`
+      <img class="pcard-img" src="${r.dataURL}" alt="фото ${i+1}" draggable="false"/>
+      <div class="pfoot">
+        <span class="pnum">Фото ${i+1} из ${results.length}</span>
+        <div class="pbtns">
+          ${cmpBtn}
+          <button class="mbtn" id="mb${i}" onclick="markSaved(${i})">Отметить ✓</button>
         </div>
-        <div class="pfoot">
-          <span class="pnum">Фото ${i+1} из ${results.length}</span>
-          <button class="mbtn" id="mb${i}" onclick="markSaved(${i})">Отметить ✓</button>
-        </div>`;
-      list.appendChild(card);
-      // Init slider after DOM insertion
-      initSlider(wid, aid, lid, kid, document.getElementById(iid));
-    } else {
-      card.innerHTML=`
-        <img src="${r.dataURL}" alt="фото ${i+1}" draggable="false" style="width:100%;display:block;-webkit-user-select:none"/>
-        <div class="pfoot">
-          <span class="pnum">Фото ${i+1} из ${results.length}</span>
-          <button class="mbtn" id="mb${i}" onclick="markSaved(${i})">Отметить ✓</button>
-        </div>`;
-      list.appendChild(card);
-    }
+      </div>`;
+    list.appendChild(card);
   });
 
-  document.getElementById('resArea').style.display='block';
+  document.getElementById('resEl').style.display='block';
   document.getElementById('saveBtn').disabled=false;
   document.getElementById('saveBtn').textContent='📥 Сохранить все фото';
-  document.getElementById('doneBanner').style.display='none';
-  document.getElementById('savedCnt').style.display='none';
+  document.getElementById('doneEl').style.display='none';
+  document.getElementById('svCntEl').style.display='none';
   updateSavedUI();
 }
 
-// ─── Save / mark ─────────────────────────────────────────────────────────────
+// ─── Mark saved ───────────────────────────────────────────────────────────────
 function markSaved(i){
   savedMap[i]=true;
   const btn=document.getElementById(`mb${i}`);
   if(btn){btn.textContent='✓ сохранено';btn.className='mbtn done';}
   const card=document.getElementById(`c${i}`);
-  if(card && !card.querySelector('.sov')){
+  if(card&&!card.querySelector('.sov')){
     card.classList.add('saved');
-    const ov=document.createElement('div'); ov.className='sov';
+    const ov=document.createElement('div');ov.className='sov';
     ov.innerHTML='<div class="scheck">✓ сохранено</div>';
-    card.insertBefore(ov, card.querySelector('.pfoot'));
+    card.insertBefore(ov,card.querySelector('.pfoot'));
   }
   updateSavedUI();
 }
 
 function updateSavedUI(){
   const n=Object.keys(savedMap).length, total=results.length;
-  if(n===total && total>0){
-    document.getElementById('doneBanner').textContent=`🎉 Все ${total} фото сохранены! Загружай на Vinted.`;
-    document.getElementById('doneBanner').style.display='block';
-    document.getElementById('savedCnt').style.display='none';
+  if(n===total&&total>0){
+    document.getElementById('doneEl').textContent=`🎉 Все ${total} фото сохранены! Загружай на Vinted.`;
+    document.getElementById('doneEl').style.display='block';
+    document.getElementById('svCntEl').style.display='none';
     document.getElementById('saveBtn').disabled=true;
     document.getElementById('saveBtn').textContent='✅ Все сохранены';
-  } else if(n>0){
-    document.getElementById('savedCnt').textContent=`Сохранено: ${n} из ${total}`;
-    document.getElementById('savedCnt').style.display='block';
+  }else if(n>0){
+    document.getElementById('svCntEl').textContent=`Сохранено: ${n} из ${total}`;
+    document.getElementById('svCntEl').style.display='block';
   }
 }
 
+// ─── Save all ─────────────────────────────────────────────────────────────────
 async function saveAll(){
-  if(!results.length) return;
+  if(!results.length)return;
   const btn=document.getElementById('saveBtn');
   btn.disabled=true; btn.textContent='Сохраняю...';
 
-  // Build File objects
   const shareFiles=results.map(r=>new File([r.blob],r.name,{type:'image/jpeg'}));
 
-  // Try Web Share API (works on iOS Safari 15+ and Android Chrome)
-  if(navigator.canShare && navigator.canShare({files:shareFiles})){
+  if(navigator.canShare&&navigator.canShare({files:shareFiles})){
     try{
-      await navigator.share({files:shareFiles, title:'Vinted фото'});
+      await navigator.share({files:shareFiles,title:'Vinted фото'});
       results.forEach((_,i)=>markSaved(i));
       return;
-    } catch(e){
-      if(e.name==='AbortError'){
-        btn.disabled=false; btn.textContent='📥 Сохранить все фото';
-        return;
-      }
-      // Other error → fall through to download
+    }catch(e){
+      if(e.name==='AbortError'){btn.disabled=false;btn.textContent='📥 Сохранить все фото';return;}
+      // fall through to download
     }
   }
 
-  // Fallback: sequential anchor download (works on desktop)
+  // Desktop fallback
   for(let i=0;i<results.length;i++){
     const a=document.createElement('a');
     a.href=results[i].dataURL;
@@ -543,6 +508,69 @@ async function saveAll(){
   btn.disabled=false;
   btn.textContent='📥 Сохранить все фото';
 }
+
+// ─── Compare modal ────────────────────────────────────────────────────────────
+let dragActive=false;
+
+function openModal(i){
+  const r=results[i];
+  if(!r||!r.origURL)return;
+  const modal=document.getElementById('modalEl');
+  const baEl=document.getElementById('baEl');
+  const beforeImg=document.getElementById('baBeforeImg');
+  const afterImg=document.getElementById('baAfterImg');
+  const afterEl=document.getElementById('baAfterEl');
+  const lineEl=document.getElementById('baLineEl');
+  const knobEl=document.getElementById('baKnobEl');
+
+  beforeImg.src=r.origURL;
+  afterImg.src=r.dataURL;
+
+  // Reset to 50%
+  afterEl.style.width='50%';
+  lineEl.style.left='50%';
+  knobEl.style.left='50%';
+
+  // Set after-img width to match container after layout
+  requestAnimationFrame(()=>{
+    afterImg.style.width=baEl.clientWidth+'px';
+  });
+
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(e){
+  if(e&&e.target!==document.getElementById('modalEl')&&!e.target.classList.contains('modal-close'))return;
+  document.getElementById('modalEl').classList.remove('open');
+  document.body.style.overflow='';
+  dragActive=false;
+}
+
+// Slider logic for modal
+function setSliderPos(clientX){
+  const baEl=document.getElementById('baEl');
+  const afterEl=document.getElementById('baAfterEl');
+  const lineEl=document.getElementById('baLineEl');
+  const knobEl=document.getElementById('baKnobEl');
+  const afterImg=document.getElementById('baAfterImg');
+  const rect=baEl.getBoundingClientRect();
+  const pct=Math.min(100,Math.max(0,(clientX-rect.left)/rect.width*100));
+  afterEl.style.width=pct+'%';
+  lineEl.style.left=pct+'%';
+  knobEl.style.left=pct+'%';
+  afterImg.style.width=baEl.clientWidth+'px';
+}
+
+document.getElementById('baEl').addEventListener('mousedown',e=>{dragActive=true;setSliderPos(e.clientX);e.preventDefault();});
+document.getElementById('baEl').addEventListener('touchstart',e=>{dragActive=true;setSliderPos(e.touches[0].clientX);},{passive:true});
+window.addEventListener('mousemove',e=>{if(dragActive)setSliderPos(e.clientX);});
+window.addEventListener('touchmove',e=>{if(dragActive)setSliderPos(e.touches[0].clientX);},{passive:true});
+window.addEventListener('mouseup',()=>dragActive=false);
+window.addEventListener('touchend',()=>dragActive=false);
+
+// Close modal on Escape
+window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal({target:document.getElementById('modalEl')});});
 </script>
 </body>
 </html>
