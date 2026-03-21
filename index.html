@@ -127,9 +127,9 @@
     <span>Равномерная со всех сторон, меняет хеш</span>
     <div class="fsizes">
       <button class="fsbtn on" onclick="setF(0,this)">Без рамки</button>
-      <button class="fsbtn" onclick="setF(0.015,this)">Тонкая</button>
-      <button class="fsbtn" onclick="setF(0.04,this)">Средняя</button>
-      <button class="fsbtn" onclick="setF(0.08,this)">Толстая</button>
+      <button class="fsbtn" onclick="setF(0.006,this)">Тонкая</button>
+      <button class="fsbtn" onclick="setF(0.025,this)">Средняя</button>
+      <button class="fsbtn" onclick="setF(0.06,this)">Толстая</button>
     </div>
   </div>
 
@@ -168,10 +168,10 @@
   <div class="modal-tip">← Тяни для сравнения →</div>
   <div class="ba" id="baEl">
     <!-- bg = processed ПОСЛЕ (shows on RIGHT) -->
-    <img class="ba-bg" id="baBgImg" draggable="false"/>
+    <img class="ba-bg" id="baBgImg" draggable="false" oncontextmenu="return false" style="-webkit-user-select:none;pointer-events:none"/>
     <!-- clip = original ДО (covers LEFT side) -->
     <div class="ba-clip" id="baClipEl">
-      <img class="ba-clip-img" id="baClipImg" draggable="false"/>
+      <img class="ba-clip-img" id="baClipImg" draggable="false" oncontextmenu="return false" style="-webkit-user-select:none;pointer-events:none"/>
     </div>
     <div class="ba-line" id="baLineEl" style="left:50%"></div>
     <div class="ba-knob" id="baKnobEl" style="left:50%">⇔</div>
@@ -571,6 +571,7 @@ function moveSlider(clientX){
   clipImg.style.width=baEl.clientWidth+'px';
 }
 
+document.getElementById('baEl').addEventListener('contextmenu',e=>e.preventDefault());
 document.getElementById('baEl').addEventListener('mousedown',e=>{dragging=true;moveSlider(e.clientX);e.preventDefault();});
 document.getElementById('baEl').addEventListener('touchstart',e=>{dragging=true;moveSlider(e.touches[0].clientX);},{passive:true});
 window.addEventListener('mousemove',e=>{if(dragging)moveSlider(e.clientX);});
