@@ -53,11 +53,10 @@
     .plist{display:flex;flex-direction:column;gap:14px}
     .pcard{border-radius:14px;overflow:hidden;border:2px solid #2e2a38;background:#141218;position:relative}
     .pcard.saved{border-color:#2d6b42}
-    /* THE ONLY IMG in card = processed. iOS hold-save always gets this */
     .pcard-img{width:100%;display:block;-webkit-user-select:none;user-select:none}
     .pfoot{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
     .pnum{font-size:13px;color:#7a7490;flex-shrink:0}
-    .pbtns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .pbtns{display:flex;gap:6px;align-items:center}
     .cmp-btn{font-size:11px;font-weight:600;font-family:'Syne',sans-serif;padding:5px 10px;border-radius:99px;border:1.5px solid #3a3348;background:transparent;color:#9d97b0;cursor:pointer;-webkit-tap-highlight-color:transparent}
     .mbtn{font-size:11px;font-weight:600;font-family:'Syne',sans-serif;padding:5px 12px;border-radius:99px;border:none;cursor:pointer;background:#3d2d70;color:#c9a6ff;-webkit-tap-highlight-color:transparent}
     .mbtn.done{background:#1a3d26;color:#6fcf97}
@@ -68,15 +67,16 @@
     .modal.open{display:flex}
     .modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
     .modal-tip{font-family:'Syne',sans-serif;font-size:13px;color:#c9a6ff;margin-bottom:10px;font-weight:700;text-align:center}
+    /* Slider: ba-clip covers LEFT side, bg-img shows on RIGHT side */
     .ba{position:relative;overflow:hidden;cursor:col-resize;touch-action:pan-y;border-radius:12px;width:100%;max-width:500px}
-    .ba-before{display:block;width:100%}
+    .ba-bg{display:block;width:100%}                   /* RIGHT = processed ПОСЛЕ */
     .ba-clip{position:absolute;top:0;left:0;height:100%;overflow:hidden;width:50%}
-    .ba-after-img{position:absolute;top:0;left:0;height:100%;display:block}
+    .ba-clip-img{position:absolute;top:0;left:0;height:100%;display:block} /* LEFT = original ДО */
     .ba-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.9);left:50%;transform:translateX(-50%);pointer-events:none}
     .ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 12px rgba(0,0,0,.5);pointer-events:none}
     .ba-tag{position:absolute;top:8px;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;padding:2px 7px;border-radius:99px;pointer-events:none}
-    .ba-tag.b{left:8px;background:rgba(0,0,0,.65);color:#fff}
-    .ba-tag.a{right:8px;background:rgba(139,92,246,.9);color:#fff}
+    .ba-tag.left{left:8px;background:rgba(0,0,0,.65);color:#fff}     /* ДО */
+    .ba-tag.right{right:8px;background:rgba(139,92,246,.9);color:#fff} /* ПОСЛЕ */
     input[type=file]{display:none}
   </style>
 </head>
@@ -85,16 +85,16 @@
 <div class="card">
   <div class="badge">📷 Vinted Tool</div>
   <h1>Обновление хешей фото</h1>
-  <p class="sub">8 изменений одновременно — Vinted не распознает фото как дубликат.</p>
+  <p class="sub">8 изменений + профессиональные улучшения как в Lightroom — Vinted не распознает дубликат, а фото выглядит лучше.</p>
 
   <div class="methods">
     <div class="method">✂️ Обрезка краёв</div>
     <div class="method">🔄 Поворот ±0.9°</div>
     <div class="method">🎨 Цветовой сдвиг RGB</div>
-    <div class="method">☀️ Авто-яркость</div>
-    <div class="method">🔴 5 шумовых пикселей</div>
-    <div class="method">🖼️ Белая рамка</div>
-    <div class="method">📄 Рандомное имя</div>
+    <div class="method">☀️ Яркость + контраст</div>
+    <div class="method">🌈 Насыщенность цветов</div>
+    <div class="method">🌑 Подъём теней</div>
+    <div class="method">📄 Рандомное имя файла</div>
     <div class="method">🧹 Очистка EXIF</div>
   </div>
 
@@ -107,7 +107,7 @@
     <div class="opt on" id="o-enhance" onclick="tog('enhance',this)">
       <div class="opt-icon">🎨</div>
       <div class="opt-title">Авто-улучшение</div>
-      <div class="opt-desc">Яркость и контраст</div>
+      <div class="opt-desc">Яркость, контраст, цвет</div>
     </div>
     <div class="opt on" id="o-fast" onclick="tog('fast',this)">
       <div class="opt-icon">⚡</div>
@@ -121,14 +121,15 @@
     </div>
   </div>
 
+  <!-- Frame: default = Без рамки, percentage-based so always uniform -->
   <div class="fbox">
     <strong>🖼️ Белая рамка</strong>
-    <span>Меняет размер и соотношение — дополнительная защита</span>
+    <span>Равномерная со всех сторон, меняет хеш</span>
     <div class="fsizes">
       <button class="fsbtn on" onclick="setF(0,this)">Без рамки</button>
-      <button class="fsbtn" onclick="setF(8,this)">Тонкая</button>
-      <button class="fsbtn" onclick="setF(25,this)">Средняя</button>
-      <button class="fsbtn" onclick="setF(55,this)">Толстая</button>
+      <button class="fsbtn" onclick="setF(0.015,this)">Тонкая</button>
+      <button class="fsbtn" onclick="setF(0.04,this)">Средняя</button>
+      <button class="fsbtn" onclick="setF(0.08,this)">Толстая</button>
     </div>
   </div>
 
@@ -147,7 +148,6 @@
     <div class="prg-lbl"><span id="prgS">Обработка...</span><span id="prgT">0/0</span></div>
     <div class="prg-bar"><div class="prg-fill" id="prgF" style="width:0%"></div></div>
   </div>
-
   <button class="btn" id="goBtn" disabled onclick="run()">🔄 Обработать фото</button>
   <div class="err" id="errEl" style="display:none"></div>
 
@@ -165,30 +165,37 @@
 <!-- Compare modal -->
 <div class="modal" id="modalEl">
   <button class="modal-close" onclick="closeModal()">✕</button>
-  <div class="modal-tip">Тяни влево-вправо для сравнения</div>
+  <div class="modal-tip">← Тяни для сравнения →</div>
   <div class="ba" id="baEl">
-    <img class="ba-before" id="baBeforeImg" draggable="false"/>
+    <!-- bg = processed ПОСЛЕ (shows on RIGHT) -->
+    <img class="ba-bg" id="baBgImg" draggable="false"/>
+    <!-- clip = original ДО (covers LEFT side) -->
     <div class="ba-clip" id="baClipEl">
-      <img class="ba-after-img" id="baAfterImg" draggable="false"/>
+      <img class="ba-clip-img" id="baClipImg" draggable="false"/>
     </div>
     <div class="ba-line" id="baLineEl" style="left:50%"></div>
     <div class="ba-knob" id="baKnobEl" style="left:50%">⇔</div>
-    <div class="ba-tag b">ДО</div>
-    <div class="ba-tag a">ПОСЛЕ</div>
+    <div class="ba-tag left">ДО</div>
+    <div class="ba-tag right">ПОСЛЕ</div>
   </div>
 </div>
 
 <script>
 'use strict';
 
-let files=[], results=[], savedMap={}, framePx=0;
-let seed=rndSeed();
+// ─── State ────────────────────────────────────────────────────────────────────
+let files=[], results=[], savedMap={}, framePct=0, seed=rndSeed();
 const O={ratio:true, enhance:true, fast:true, cmp:true};
 
 function rndSeed(){return Math.floor(Math.random()*999983)+1;}
 function tog(k,el){O[k]=!O[k];el.classList.toggle('on',O[k]);}
-function setF(px,btn){framePx=px;document.querySelectorAll('.fsbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function setF(pct,btn){
+  framePct=pct;
+  document.querySelectorAll('.fsbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
 
+// ─── File input ───────────────────────────────────────────────────────────────
 const dropEl=document.getElementById('dropEl');
 dropEl.addEventListener('dragover',e=>{e.preventDefault();dropEl.classList.add('over');});
 dropEl.addEventListener('dragleave',()=>dropEl.classList.remove('over'));
@@ -208,6 +215,7 @@ function loadFiles(raw){
   document.getElementById('goBtn').textContent=`🔄 Обработать ${files.length} фото`;
 }
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 function readURL(f){
   return new Promise((ok,fail)=>{
     const r=new FileReader();
@@ -216,25 +224,83 @@ function readURL(f){
     r.readAsDataURL(f);
   });
 }
-function toBlob(dataURL){
-  const[h,d]=dataURL.split(',');
-  const mime=h.match(/:(.*?);/)[1];
-  const raw=atob(d);const u=new Uint8Array(raw.length);
-  for(let i=0;i<raw.length;i++)u[i]=raw.charCodeAt(i);
-  return new Blob([u],{type:mime});
+function toBlob(d){
+  const[h,b]=d.split(','),m=h.match(/:(.*?);/)[1],s=atob(b),u=new Uint8Array(s.length);
+  for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);
+  return new Blob([u],{type:m});
 }
 function mkRand(s){let v=s;return()=>{v=(v*1664525+1013904223)&0xffffffff;return(v>>>0)/0xffffffff;};}
 
-// Render a region of an image onto a new canvas, returns dataURL
-function renderRegion(img, sx, sy, sw, sh, outW, outH){
-  const cv=document.createElement('canvas');
-  cv.width=outW; cv.height=outH;
-  const ctx=cv.getContext('2d');
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
-  return cv.toDataURL('image/jpeg', 0.93);
+// Draw a region of img onto a new (outW×outH) canvas, return dataURL
+function regionToDataURL(img, sx, sy, sw, sh, outW, outH, quality=0.92){
+  const c=document.createElement('canvas'); c.width=outW; c.height=outH;
+  c.getContext('2d').drawImage(img,sx,sy,sw,sh,0,0,outW,outH);
+  return c.toDataURL('image/jpeg',quality);
 }
 
-async function transform(file, idx, frame){
+// ─── Photo enhancement pipeline ───────────────────────────────────────────────
+// Based on Lightroom/Shopify product photo best practices:
+// 1. Analyse brightness & white balance
+// 2. Lift shadows (reveal dark detail)
+// 3. Recover highlights (pull back blown whites)
+// 4. Contrast +15–20
+// 5. Brightness +10–15
+// 6. Saturation/Vibrance +20% (boosts dull colors)
+function applyEnhance(d, len){
+  // ── Analyse ──────────────────────────────────────────────────────────────────
+  let sumL=0, sumR=0, sumB=0, count=len/4;
+  for(let i=0;i<len;i+=4){
+    const l=(d[i]+d[i+1]+d[i+2])/3;
+    sumL+=l; sumR+=d[i]; sumB+=d[i+2];
+  }
+  const avgL=sumL/count;
+  const avgR=sumR/count;
+  const avgB=sumB/count;
+
+  // Brightness target: aim for avgL ≈ 155 (bright, clean product look)
+  const targetL=155;
+  const bBoost=Math.max(-20, Math.min(40, targetL-avgL)); // clamp so we don't blow out bright photos
+  const cf=1.15; // contrast factor — research says +15 is good for products
+
+  // White balance correction: if image is yellow (R>>B), add slight blue
+  const wbShift = (avgR-avgB>18) ? Math.floor((avgR-avgB)*0.12) : 0; // cool down yellow cast
+
+  // ── Apply per-pixel ───────────────────────────────────────────────────────────
+  for(let i=0;i<len;i+=4){
+    let r=d[i], g=d[i+1], b=d[i+2];
+    const lum=(r+g+b)/3;
+
+    // 1. Shadow lift: dark pixels get extra boost (reveal product detail in shadows)
+    const shadowBoost = lum<80 ? Math.floor((80-lum)*0.25) : 0;
+
+    // 2. Highlight recovery: very bright pixels pulled back (prevent blown whites)
+    const hlRecovery = lum>235 ? -Math.floor((lum-235)*0.4) : 0;
+
+    // 3. Contrast around 128 midpoint
+    r=(r-128)*cf+128; g=(g-128)*cf+128; b=(b-128)*cf+128;
+
+    // 4. Brightness boost (targeted at darkness level)
+    const totalBoost=bBoost+shadowBoost+hlRecovery;
+    r+=totalBoost; g+=totalBoost; b+=totalBoost;
+
+    // 5. White balance correction (reduce yellow cast)
+    b+=wbShift;
+
+    // 6. Saturation boost: increase distance from luminance mean
+    const mean2=(r+g+b)/3;
+    const satF=1.20; // +20% saturation — research says this makes colors pop
+    r=mean2+(r-mean2)*satF;
+    g=mean2+(g-mean2)*satF;
+    b=mean2+(b-mean2)*satF;
+
+    d[i]=Math.min(255,Math.max(0,r|0));
+    d[i+1]=Math.min(255,Math.max(0,g|0));
+    d[i+2]=Math.min(255,Math.max(0,b|0));
+  }
+}
+
+// ─── Core transform ───────────────────────────────────────────────────────────
+async function transform(file, idx, framePct_){
   const origURL=await readURL(file);
   const img=await new Promise((ok,fail)=>{
     const i=new Image();
@@ -244,113 +310,111 @@ async function transform(file, idx, frame){
   });
 
   const rnd=mkRand(idx*7919+seed);
-  const W=img.naturalWidth, H=img.naturalHeight;
+  const W=img.naturalWidth|0, H=img.naturalHeight|0;
   if(W<40||H<40) throw new Error('Слишком маленькое фото: '+file.name);
 
-  // ── STEP 1: Measure brightness on downsampled copy ──────────────────────────
-  const tw=Math.min(W,300), th=Math.min(H,300);
-  const tc=document.createElement('canvas'); tc.width=tw; tc.height=th;
-  const tx=tc.getContext('2d'); tx.drawImage(img,0,0,tw,th);
-  const td=tx.getImageData(0,0,tw,th).data;
-  let totalBr=0;
-  for(let i=0;i<td.length;i+=4) totalBr+=(td[i]+td[i+1]+td[i+2])/3;
-  const avgBr=totalBr/(td.length/4);
+  // ── 1. Edge crop (unique per photo) ─────────────────────────────────────────
+  let sx=(Math.floor(rnd()*6)+3)|0;
+  let sy=(Math.floor(rnd()*6)+3)|0;
+  let sw=(W-sx-(Math.floor(rnd()*6)+3))|0;
+  let sh=(H-sy-(Math.floor(rnd()*6)+3))|0;
+  if(sw<40){sw=40;sx=0;} if(sh<40){sh=40;sy=0;}
 
-  // ── STEP 2: Compute crop region ─────────────────────────────────────────────
-  let sx=Math.floor(rnd()*6)+3;
-  let sy=Math.floor(rnd()*6)+3;
-  let sw=W-sx-(Math.floor(rnd()*6)+3);
-  let sh=H-sy-(Math.floor(rnd()*6)+3);
-  sw=Math.max(sw,40); sh=Math.max(sh,40);
-
-  // ── STEP 3: Apply 4:5 ratio crop ────────────────────────────────────────────
+  // ── 2. 4:5 portrait ratio crop ───────────────────────────────────────────────
   if(O.ratio){
     const tgt=4/5, cur=sw/sh;
     if(cur>tgt){
       const nw=Math.floor(sh*tgt);
-      sx+=Math.floor((sw-nw)/2);
+      sx=Math.min(W-nw, sx+Math.floor((sw-nw)/2))|0;
       sw=nw;
     } else if(cur<tgt){
       const nh=Math.floor(sw/tgt);
-      sy+=Math.floor((sh-nh)*0.3);
+      sy=Math.min(H-nh, sy+Math.floor((sh-nh)*0.3))|0;
       sh=nh;
     }
   }
-  sw=Math.max(sw,20); sh=Math.max(sh,20);
+  if(sx<0)sx=0; if(sy<0)sy=0;
+  if(sx+sw>W)sw=W-sx; if(sy+sh>H)sh=H-sy;
+  sw=Math.max(sw,20)|0; sh=Math.max(sh,20)|0;
 
-  // ── STEP 4: Build "before" preview = SAME crop region, no enhancements ──────
-  // This ensures compare slider shows identical framing on both sides
-  const beforeURL = O.cmp ? renderRegion(img, sx, sy, sw, sh, sw, sh) : null;
+  // ── 3. Frame size (% of min dimension → always visually uniform) ─────────────
+  const frame=Math.round(Math.min(sw,sh)*framePct_);
 
-  // ── STEP 5: Build output canvas (crop + frame) ───────────────────────────────
-  const outW=sw+frame*2, outH=sh+frame*2;
+  // ── 4. Build output canvas ────────────────────────────────────────────────────
+  const outW=(sw+frame*2)|0, outH=(sh+frame*2)|0;
   const cv=document.createElement('canvas'); cv.width=outW; cv.height=outH;
   const ctx=cv.getContext('2d');
 
-  // White frame
+  // White frame (fills entire canvas, uniform on all sides)
   ctx.fillStyle='#ffffff';
   ctx.fillRect(0,0,outW,outH);
 
-  // Draw rotated image clipped to inner rect
+  // Draw image into inner area (rotated, clipped so rotation never bleeds into frame)
   const rot=(rnd()-0.5)*1.8;
   ctx.save();
   ctx.beginPath(); ctx.rect(frame,frame,sw,sh); ctx.clip();
   ctx.translate(frame+sw/2, frame+sh/2);
   ctx.rotate(rot*Math.PI/180);
-  ctx.drawImage(img, sx, sy, sw, sh, -sw/2, -sh/2, sw, sh);
+  ctx.drawImage(img, sx, sy, sw, sh, -(sw/2), -(sh/2), sw, sh);
   ctx.restore();
 
-  // ── STEP 6: Pixel-level enhancements on inner area ───────────────────────────
-  const id=ctx.getImageData(frame,frame,sw,sh), d=id.data;
-  const rS=Math.floor(rnd()*6)+2;
-  const gS=Math.floor(rnd()*4)-1;
-  const bS=-(Math.floor(rnd()*4)+1);
+  // ── 5. Apply enhancements to inner pixels only ────────────────────────────────
+  const id=ctx.getImageData(frame,frame,sw,sh);
+  const d=id.data;
 
-  // Auto-enhance: stronger formula
-  // If dark (<100): strong boost. If medium (100-160): moderate. If bright: subtle.
-  let boost=0, cf=1.0;
   if(O.enhance){
-    if(avgBr<80){boost=30; cf=1.25;}
-    else if(avgBr<110){boost=18; cf=1.18;}
-    else if(avgBr<140){boost=10; cf=1.10;}
-    else if(avgBr<170){boost=4;  cf=1.05;}
-    else{boost=0; cf=1.02;}
+    applyEnhance(d, d.length);
   }
 
+  // RGB hash-change shift (unique per photo, applied on top of enhance)
+  const rS=(Math.floor(rnd()*5)+2)|0;
+  const gS=(Math.floor(rnd()*3)-1)|0;
+  const bS=(-(Math.floor(rnd()*3)+1))|0;
   for(let i=0;i<d.length;i+=4){
-    let r=d[i]+rS, g=d[i+1]+gS, b=d[i+2]+bS;
-    if(O.enhance){
-      r=(r-128)*cf+128+boost;
-      g=(g-128)*cf+128+boost;
-      b=(b-128)*cf+128+boost;
-    }
-    d[i]=Math.min(255,Math.max(0,r|0));
-    d[i+1]=Math.min(255,Math.max(0,g|0));
-    d[i+2]=Math.min(255,Math.max(0,b|0));
+    d[i]=Math.min(255,Math.max(0,(d[i]+rS)|0));
+    d[i+1]=Math.min(255,Math.max(0,(d[i+1]+gS)|0));
+    d[i+2]=Math.min(255,Math.max(0,(d[i+2]+bS)|0));
   }
   ctx.putImageData(id,frame,frame);
 
-  // Brightness overlay
-  const br=Math.floor(rnd()*8)+3;
+  // Subtle brightness overlay
+  const br=(Math.floor(rnd()*6)+2)|0;
   ctx.globalCompositeOperation='source-over';
   ctx.fillStyle=`rgba(255,255,255,${br/255})`;
   ctx.fillRect(frame,frame,sw,sh);
 
   // 5 noise pixels
   for(let j=0;j<5;j++){
-    const px=frame+Math.floor(rnd()*(sw-20))+10;
-    const py=frame+Math.floor(rnd()*(sh-20))+10;
-    ctx.fillStyle=`rgb(${Math.floor(rnd()*60)+175},${Math.floor(rnd()*60)+175},${Math.floor(rnd()*60)+175})`;
+    const px=(frame+Math.floor(rnd()*(sw-20))+10)|0;
+    const py=(frame+Math.floor(rnd()*(sh-20))+10)|0;
+    const nr=(Math.floor(rnd()*60)+175)|0;
+    const ng=(Math.floor(rnd()*60)+175)|0;
+    const nb=(Math.floor(rnd()*60)+175)|0;
+    ctx.fillStyle=`rgb(${nr},${ng},${nb})`;
     ctx.fillRect(px,py,1,1);
   }
 
+  // ── 6. Export processed image ─────────────────────────────────────────────────
   const outURL=cv.toDataURL('image/jpeg',0.93);
   const name=Math.random().toString(36).slice(2,10)+'_'+Math.random().toString(36).slice(2,6)+'.jpg';
 
-  return{ dataURL:outURL, blob:toBlob(outURL), name, beforeURL };
+  // ── 7. Build "before" thumbnail for compare (same crop, no enhancements) ──────
+  // Extract the inner area of the processed canvas (no frame) for ПОСЛЕ side
+  // Build original crop for ДО side — same (sx,sy,sw,sh) region
+  let beforeURL=null, afterCropURL=null;
+  if(O.cmp){
+    // ДО: original image, same crop area, rendered at sw×sh
+    beforeURL=regionToDataURL(img, sx, sy, sw, sh, sw, sh, 0.88);
+    // ПОСЛЕ: inner area of processed canvas (no frame)
+    const innerCv=document.createElement('canvas'); innerCv.width=sw; innerCv.height=sh;
+    innerCv.getContext('2d').drawImage(cv, frame, frame, sw, sh, 0, 0, sw, sh);
+    afterCropURL=innerCv.toDataURL('image/jpeg',0.88);
+  }
+
+  return{ dataURL:outURL, blob:toBlob(outURL), name, beforeURL, afterCropURL };
 }
 
-// Concurrency pool
+// ─── Concurrency pool ─────────────────────────────────────────────────────────
 function runPool(tasks, limit, onProg){
   return new Promise((resolve,reject)=>{
     const out=new Array(tasks.length);
@@ -358,16 +422,13 @@ function runPool(tasks, limit, onProg){
     function next(){
       if(started>=tasks.length)return;
       const i=started++;
-      tasks[i]().then(r=>{
-        out[i]=r; finished++;
-        onProg(finished,tasks.length);
-        if(finished===tasks.length) resolve(out); else next();
-      }).catch(reject);
+      tasks[i]().then(r=>{out[i]=r;finished++;onProg(finished,tasks.length);if(finished===tasks.length)resolve(out);else next();}).catch(reject);
     }
     for(let k=0;k<Math.min(limit,tasks.length);k++) next();
   });
 }
 
+// ─── Run ─────────────────────────────────────────────────────────────────────
 async function run(){
   if(!files.length)return;
   const goBtn=document.getElementById('goBtn');
@@ -375,13 +436,11 @@ async function run(){
   document.getElementById('prgEl').style.display='block';
   document.getElementById('resEl').style.display='none';
   document.getElementById('errEl').style.display='none';
-  results=[];savedMap={};
-  seed=rndSeed();
+  results=[];savedMap={};seed=rndSeed();
   document.getElementById('prgS').textContent=O.fast?'⚡ Быстрый режим...':'Обработка...';
-
   try{
-    const tasks=files.map((f,i)=>()=>transform(f,i,framePx));
-    results=await runPool(tasks, O.fast?2:1, (done,total)=>{
+    const tasks=files.map((f,i)=>()=>transform(f,i,framePct));
+    results=await runPool(tasks,O.fast?2:1,(done,total)=>{
       document.getElementById('prgF').style.width=Math.round(done/total*100)+'%';
       document.getElementById('prgT').textContent=`${done}/${total}`;
     });
@@ -396,42 +455,33 @@ async function run(){
   }
 }
 
+// ─── Render ───────────────────────────────────────────────────────────────────
 function renderResults(){
   document.getElementById('resTitleEl').textContent=`✅ ${results.length} фото готово`;
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
   document.getElementById('hintEl').innerHTML=isIOS
-    ?`<b>📱 iPhone:</b> Зажми обработанное фото → <b>«Сохранить в Фото»</b>.<br>Или нажми <b>«Сохранить все»</b> → «Сохранить изображения».`
+    ?`<b>📱 iPhone:</b> Зажми фото → <b>«Сохранить в Фото»</b>.<br>Или нажми <b>«Сохранить все»</b> → «Сохранить изображения».`
     :`<b>💻 Компьютер:</b> Нажми <b>«Сохранить все»</b> — файлы скачаются автоматически.`;
 
   const list=document.getElementById('plistEl');
   list.innerHTML='';
-
   results.forEach((r,i)=>{
     const card=document.createElement('div');
     card.className='pcard'; card.id=`c${i}`;
-
-    // Only the processed img lives in the card — iOS hold-save saves THIS
-    const cmpBtn=O.cmp&&r.beforeURL
-      ?`<button class="cmp-btn" onclick="openModal(${i})">👁 Сравнить</button>` : '';
-
+    const cmpBtn=O.cmp&&r.beforeURL?`<button class="cmp-btn" onclick="openModal(${i})">👁 Сравнить</button>`:'';
     card.innerHTML=`
       <img class="pcard-img" src="${r.dataURL}" alt="фото ${i+1}" draggable="false"/>
       <div class="pfoot">
         <span class="pnum">Фото ${i+1} из ${results.length}</span>
-        <div class="pbtns">
-          ${cmpBtn}
-          <button class="mbtn" id="mb${i}" onclick="markSaved(${i})">Отметить ✓</button>
-        </div>
+        <div class="pbtns">${cmpBtn}<button class="mbtn" id="mb${i}" onclick="markSaved(${i})">Отметить ✓</button></div>
       </div>`;
     list.appendChild(card);
   });
-
   document.getElementById('resEl').style.display='block';
   document.getElementById('saveBtn').disabled=false;
   document.getElementById('saveBtn').textContent='📥 Сохранить все фото';
   document.getElementById('doneEl').style.display='none';
   document.getElementById('svCntEl').style.display='none';
-  updateSavedUI();
 }
 
 function markSaved(i){
@@ -445,18 +495,14 @@ function markSaved(i){
     ov.innerHTML='<div class="scheck">✓ сохранено</div>';
     card.insertBefore(ov,card.querySelector('.pfoot'));
   }
-  updateSavedUI();
-}
-
-function updateSavedUI(){
   const n=Object.keys(savedMap).length, total=results.length;
-  if(n===total&&total>0){
+  if(n===total){
     document.getElementById('doneEl').textContent=`🎉 Все ${total} фото сохранены! Загружай на Vinted.`;
     document.getElementById('doneEl').style.display='block';
     document.getElementById('svCntEl').style.display='none';
     document.getElementById('saveBtn').disabled=true;
     document.getElementById('saveBtn').textContent='✅ Все сохранены';
-  }else if(n>0){
+  } else {
     document.getElementById('svCntEl').textContent=`Сохранено: ${n} из ${total}`;
     document.getElementById('svCntEl').style.display='block';
   }
@@ -466,49 +512,42 @@ async function saveAll(){
   if(!results.length)return;
   const btn=document.getElementById('saveBtn');
   btn.disabled=true; btn.textContent='Сохраняю...';
-  const shareFiles=results.map(r=>new File([r.blob],r.name,{type:'image/jpeg'}));
-  if(navigator.canShare&&navigator.canShare({files:shareFiles})){
-    try{
-      await navigator.share({files:shareFiles,title:'Vinted фото'});
-      results.forEach((_,i)=>markSaved(i)); return;
-    }catch(e){
-      if(e.name==='AbortError'){btn.disabled=false;btn.textContent='📥 Сохранить все фото';return;}
-    }
+  const sf=results.map(r=>new File([r.blob],r.name,{type:'image/jpeg'}));
+  if(navigator.canShare&&navigator.canShare({files:sf})){
+    try{await navigator.share({files:sf,title:'Vinted фото'});results.forEach((_,i)=>markSaved(i));return;}
+    catch(e){if(e.name==='AbortError'){btn.disabled=false;btn.textContent='📥 Сохранить все фото';return;}}
   }
   for(let i=0;i<results.length;i++){
-    const a=document.createElement('a');
-    a.href=results[i].dataURL; a.download=results[i].name;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    const a=document.createElement('a');a.href=results[i].dataURL;a.download=results[i].name;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
     await new Promise(r=>setTimeout(r,350));
   }
   results.forEach((_,i)=>markSaved(i));
   btn.disabled=false; btn.textContent='📥 Сохранить все фото';
 }
 
-// ── Compare modal ─────────────────────────────────────────────────────────────
+// ─── Compare modal ────────────────────────────────────────────────────────────
 let dragging=false;
 
 function openModal(i){
   const r=results[i];
   if(!r||!r.beforeURL)return;
-
-  const baEl=document.getElementById('baEl');
-  const beforeImg=document.getElementById('baBeforeImg');
-  const afterImg=document.getElementById('baAfterImg');
-  const clipEl=document.getElementById('baClipEl');
+  const baBg=document.getElementById('baBgImg');       // RIGHT = ПОСЛЕ (processed inner)
+  const baClip=document.getElementById('baClipImg');   // LEFT  = ДО    (original crop)
+  const baClipEl=document.getElementById('baClipEl');
   const lineEl=document.getElementById('baLineEl');
   const knobEl=document.getElementById('baKnobEl');
+  const baEl=document.getElementById('baEl');
 
-  beforeImg.src=r.beforeURL;  // same crop area, no enhancements
-  afterImg.src=r.dataURL;      // processed (with frame, enhancements etc)
+  baBg.src=r.afterCropURL;   // processed inner area (no frame) → ПОСЛЕ on right
+  baClip.src=r.beforeURL;    // original crop → ДО on left
 
   // Reset to 50%
-  clipEl.style.width='50%'; lineEl.style.left='50%'; knobEl.style.left='50%';
+  baClipEl.style.width='50%'; lineEl.style.left='50%'; knobEl.style.left='50%';
 
-  // Set after-img width = container width so clipping works correctly
-  const setAfterWidth=()=>{ afterImg.style.width=baEl.clientWidth+'px'; };
-  beforeImg.onload=setAfterWidth;
-  setAfterWidth();
+  // Set clip-img width = container width so it shows correctly
+  baBg.onload=()=>{ baClip.style.width=baEl.clientWidth+'px'; };
+  baClip.style.width=baEl.clientWidth+'px';
 
   document.getElementById('modalEl').classList.add('open');
   document.body.style.overflow='hidden';
@@ -520,29 +559,28 @@ function closeModal(){
   dragging=false;
 }
 
-// Click backdrop to close
 document.getElementById('modalEl').addEventListener('click',e=>{
-  if(e.target===document.getElementById('modalEl')) closeModal();
+  if(e.target===document.getElementById('modalEl'))closeModal();
 });
 
-function sliderMove(clientX){
+function moveSlider(clientX){
   const baEl=document.getElementById('baEl');
-  const clipEl=document.getElementById('baClipEl');
-  const lineEl=document.getElementById('baLineEl');
-  const knobEl=document.getElementById('baKnobEl');
-  const afterImg=document.getElementById('baAfterImg');
+  const clip=document.getElementById('baClipEl');
+  const line=document.getElementById('baLineEl');
+  const knob=document.getElementById('baKnobEl');
+  const clipImg=document.getElementById('baClipImg');
   const rect=baEl.getBoundingClientRect();
   const pct=Math.min(100,Math.max(0,(clientX-rect.left)/rect.width*100));
-  clipEl.style.width=pct+'%';
-  lineEl.style.left=pct+'%';
-  knobEl.style.left=pct+'%';
-  afterImg.style.width=baEl.clientWidth+'px';
+  clip.style.width=pct+'%';
+  line.style.left=pct+'%';
+  knob.style.left=pct+'%';
+  clipImg.style.width=baEl.clientWidth+'px';
 }
 
-document.getElementById('baEl').addEventListener('mousedown',e=>{dragging=true;sliderMove(e.clientX);e.preventDefault();});
-document.getElementById('baEl').addEventListener('touchstart',e=>{dragging=true;sliderMove(e.touches[0].clientX);},{passive:true});
-window.addEventListener('mousemove',e=>{if(dragging)sliderMove(e.clientX);});
-window.addEventListener('touchmove',e=>{if(dragging)sliderMove(e.touches[0].clientX);},{passive:true});
+document.getElementById('baEl').addEventListener('mousedown',e=>{dragging=true;moveSlider(e.clientX);e.preventDefault();});
+document.getElementById('baEl').addEventListener('touchstart',e=>{dragging=true;moveSlider(e.touches[0].clientX);},{passive:true});
+window.addEventListener('mousemove',e=>{if(dragging)moveSlider(e.clientX);});
+window.addEventListener('touchmove',e=>{if(dragging)moveSlider(e.touches[0].clientX);},{passive:true});
 window.addEventListener('mouseup',()=>dragging=false);
 window.addEventListener('touchend',()=>dragging=false);
 window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
